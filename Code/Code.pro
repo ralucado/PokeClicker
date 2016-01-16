@@ -3,17 +3,17 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
+LIBS += -lsfml-system -lsfml-graphics -lsfml-window -lsfml-audio
+
+QMAKE_CXXFLAGS += -std=c++11
+
 SOURCES += main.cpp \
-    context.cpp \
-    player.cpp \
-    pokemon.cpp \
-    badge.cpp \
-    eggshop.cpp
+    Background.cpp \
+    utils.cpp \
+    button.cpp
 
 HEADERS += \
-    context.h \
-    player.h \
-    pokemon.h \
-    badge.h \
-    eggshop.h
+    Background.h \
+    utils.h \
+    button.h
 
