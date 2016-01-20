@@ -10,10 +10,12 @@ QMAKE_CXXFLAGS += -std=c++11
 SOURCES += main.cpp \
     Background.cpp \
     utils.cpp \
-    button.cpp
+    button.cpp \
+    pokemon.cpp
 
 HEADERS += \
     Background.h \
     utils.h \
-    button.h
+    button.h \
+    pokemon.h
 

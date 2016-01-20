@@ -3,17 +3,23 @@
 
 #include "utils.h"
 
-class Button : sf::Sprite{
+class Button : public sf::Sprite{
 
 public:
     Button(string path);
-
-    void handleEvent(sf::Event event);
-
+    int getClicks();
+    void handleMouseEvent(sf::Event& event);
+    void update(sf::Vector2i mousePosition);
 
 private:
+
+    int _xSize;
+    int _ySize;
+    int _clicks;
+    int _state;
     sf::Texture _texture;
 
+    bool inside(sf::Vector2i position);
 };
 
 #endif // BUTTON_H

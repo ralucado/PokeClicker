@@ -47,10 +47,12 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../Code/main.cpp \
 		../Code/Background.cpp \
-		../Code/utils.cpp 
+		../Code/utils.cpp \
+		../Code/button.cpp 
 OBJECTS       = main.o \
 		Background.o \
-		utils.o
+		utils.o \
+		button.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -286,7 +288,8 @@ compiler_clean:
 ####### Compile
 
 main.o: ../Code/main.cpp ../Code/utils.h \
-		../Code/Background.h
+		../Code/Background.h \
+		../Code/button.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Code/main.cpp
 
 Background.o: ../Code/Background.cpp ../Code/Background.h \
@@ -295,6 +298,10 @@ Background.o: ../Code/Background.cpp ../Code/Background.h \
 
 utils.o: ../Code/utils.cpp ../Code/utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o utils.o ../Code/utils.cpp
+
+button.o: ../Code/button.cpp ../Code/button.h \
+		../Code/utils.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o button.o ../Code/button.cpp
 
 ####### Install
 
