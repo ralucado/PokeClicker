@@ -22,7 +22,7 @@ void Button::handleMouseEvent(sf::Event& event){
                 if(_state == State::pressed){
                     _state = State::active;
                     ++_clicks;
-                    cout << "Click!" << endl;
+                    cout << "Click!" << _clicks << endl;
                 }
             break;
 
@@ -50,7 +50,10 @@ bool Button::inside(sf::Vector2i position){
 }
 
 int Button::getClicks(){
+
     int c = _clicks;
+    //cout << "popping clicks " << c << endl;
     _clicks = 0;
+    //cout << "popclicks = " << _clicks << endl;
     return c;
 }

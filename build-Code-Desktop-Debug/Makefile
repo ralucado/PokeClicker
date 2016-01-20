@@ -48,11 +48,13 @@ OBJECTS_DIR   = ./
 SOURCES       = ../Code/main.cpp \
 		../Code/Background.cpp \
 		../Code/utils.cpp \
-		../Code/button.cpp 
+		../Code/button.cpp \
+		../Code/pokemon.cpp 
 OBJECTS       = main.o \
 		Background.o \
 		utils.o \
-		button.o
+		button.o \
+		pokemon.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -302,6 +304,9 @@ utils.o: ../Code/utils.cpp ../Code/utils.h
 button.o: ../Code/button.cpp ../Code/button.h \
 		../Code/utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o button.o ../Code/button.cpp
+
+pokemon.o: ../Code/pokemon.cpp ../Code/pokemon.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokemon.o ../Code/pokemon.cpp
 
 ####### Install
 

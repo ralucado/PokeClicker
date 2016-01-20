@@ -5,33 +5,32 @@
 using namespace std;
 
 int main(){
+    bool menu = true;
     sf::Event event;
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Poke Clicker YOYOOYOOOO OOOOOH so gut at dis geim");
-    Background background("Resources/Images/background.png");
-
-    vector<Button> buttons;
+    Background background("Resources/Images/background.png");    
+    vector<Button*> buttons;
 
     Button pokeball("Resources/Images/pokeball.png");
     pokeball.setPosition(425,509);
-    buttons.push_back(pokeball);
+    buttons.push_back(&pokeball);
 
     Button buyegg("Resources/Images/buyegg.png");
     buyegg.setPosition(643,509);
-    buttons.push_back(buyegg);
+    buttons.push_back(&buyegg);
 
 
     Button pokedex("Resources/Images/pokedexbutton.png");
     pokedex.setPosition(111,509);
-    buttons.push_back(pokedex);
+    buttons.push_back(&pokedex);
 
+    Background pokedexBkg("Resources/Images/pokedexbackground.png");
+
+    Button back("Resources/Images/backButton.png");
+    back.setPosition(881,618);
 
     while(window.isOpen()){
 
-
-        for(auto&& b : buttons){
-            //cout << b.getClicks() << endl;
-            b.update(sf::Mouse::getPosition(window));
-        }
 
         while(window.pollEvent(event)){
 
@@ -39,10 +38,12 @@ int main(){
 
                 case (sf::Event::MouseButtonPressed) :
                 case (sf::Event::MouseButtonReleased) :
+                    if(menu)
+                        for (int i = 0; i < buttons.size(); ++i){
+                            buttons[i]->handleMouseEvent(event);
+                        }
 
-                    for (auto&& b : buttons){
-                        b.handleMouseEvent(event);
-                    }
+                    else back.handleMouseEvent(event);
 
                     break;
 
@@ -55,9 +56,31 @@ int main(){
             }
         }
 
-        window.clear();
-        background.draw(window);
-        for (auto&& b : buttons) window.draw(b);
+        if(menu){
+
+            for(int i = 0; i < buttons.size(); ++i){
+                buttons[i]->update(sf::Mouse::getPosition(window));
+            }
+
+            if(pokedex.getClicks() != 0) menu = false;
+            window.clear();
+            background.draw(window);
+            for (int i = 0; i < buttons.size(); ++i) window.draw(*buttons[i]);
+        }
+
+        else{
+            //cout << "fora del menu" << endl;
+            back.update(sf::Mouse::getPosition(window));
+            if(back.getClicks() != 0) menu = true;
+
+            window.clear();
+            pokedexBkg.draw(window);
+            window.draw(back);
+
+
+        }
+
+
         window.display();
 
     }
