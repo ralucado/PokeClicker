@@ -7,10 +7,11 @@ class Button : public sf::Sprite{
 
 public:
     Button(string path);
+    void turnOn();
+    void turnOff();
     int getClicks();
     void handleMouseEvent(sf::Event& event);
     void update(sf::Vector2i mousePosition);
-
 private:
 
     int _xSize;

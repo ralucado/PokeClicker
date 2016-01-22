@@ -10,10 +10,10 @@
 #include <SFML/Graphics.hpp>
  using namespace std;
 
-#define IMAGE_PATH "Resources/Images/"
+#define uint unsigned int
 
 namespace State {
-    enum myState {released, active, pressed};
+    enum myState {released, active, pressed, off};
 }
 /*
 const bool fromEgg[152] = {true, false, false, true, false, false, true, false, false, true, false, false, true, false, false, true, false, false,

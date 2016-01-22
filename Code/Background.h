@@ -1,7 +1,7 @@
 #ifndef BACKGROUND_H
 #define BACKGROUND_H
 
-#include "utils.h";
+#include "utils.h"
 
 class Background{
 

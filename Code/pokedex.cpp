@@ -20,7 +20,7 @@ void Pokedex::addPokemon(int num){
 }
 
 void Pokedex::draw(sf::RenderTarget& window){
-    for(int i = 0; i < _sprites.size(); ++i){
+    for(uint i = 0; i < _sprites.size(); ++i){
         window.draw(_sprites[i]);
     }
 }

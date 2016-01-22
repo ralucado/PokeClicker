@@ -11,13 +11,15 @@ SOURCES += main.cpp \
     Background.cpp \
     utils.cpp \
     button.cpp \
-    pokemon.cpp \
-    pokedex.cpp
+    pokedex.cpp \
+    levelbar.cpp \
+    gameengine.cpp
 
 HEADERS += \
     Background.h \
     utils.h \
     button.h \
-    pokemon.h \
-    pokedex.h
+    pokedex.h \
+    levelbar.h \
+    gameengine.h
 

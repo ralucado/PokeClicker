@@ -49,14 +49,16 @@ SOURCES       = ../Code/main.cpp \
 		../Code/Background.cpp \
 		../Code/utils.cpp \
 		../Code/button.cpp \
-		../Code/pokemon.cpp \
-		../Code/pokedex.cpp 
+		../Code/pokedex.cpp \
+		../Code/levelbar.cpp \
+		../Code/gameengine.cpp 
 OBJECTS       = main.o \
 		Background.o \
 		utils.o \
 		button.o \
-		pokemon.o \
-		pokedex.o
+		pokedex.o \
+		levelbar.o \
+		gameengine.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -292,8 +294,11 @@ compiler_clean:
 ####### Compile
 
 main.o: ../Code/main.cpp ../Code/utils.h \
-		../Code/Background.h \
-		../Code/button.h
+		../Code/button.h \
+		../Code/pokedex.h \
+		../Code/levelbar.h \
+		../Code/gameengine.h \
+		../Code/Background.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Code/main.cpp
 
 Background.o: ../Code/Background.cpp ../Code/Background.h \
@@ -307,14 +312,18 @@ button.o: ../Code/button.cpp ../Code/button.h \
 		../Code/utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o button.o ../Code/button.cpp
 
-pokemon.o: ../Code/pokemon.cpp ../Code/pokemon.h \
-		../Code/utils.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokemon.o ../Code/pokemon.cpp
-
 pokedex.o: ../Code/pokedex.cpp ../Code/pokedex.h \
 		../Code/utils.h \
 		../Code/button.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokedex.o ../Code/pokedex.cpp
+
+levelbar.o: ../Code/levelbar.cpp ../Code/levelbar.h \
+		../Code/utils.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o levelbar.o ../Code/levelbar.cpp
+
+gameengine.o: ../Code/gameengine.cpp ../Code/gameengine.h \
+		../Code/utils.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gameengine.o ../Code/gameengine.cpp
 
 ####### Install
 

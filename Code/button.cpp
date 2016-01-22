@@ -3,12 +3,46 @@
 Button::Button(string path){
     cout << "init!" << endl;
     _clicks = 0;
-    _state = State::released;
+    _state = State::off;
     if(!_texture.loadFromFile(path)) cerr << "failed to load button texture!!" << endl;
     setTexture(_texture);
     _xSize = _texture.getSize().x;
-    _ySize = _texture.getSize().y/3;
+    _ySize = _texture.getSize().y/4;
     setTextureRect(sf::IntRect(0,_ySize*_state,_xSize,_ySize));
+}
+
+void Button::turnOn(){
+    _state = State::released;
+}
+
+void Button::turnOff(){
+    _state = State::off;
+}
+
+int Button::getClicks(){
+
+    int c = _clicks;
+    //cout << "popping clicks " << c << endl;
+    _clicks = 0;
+    //cout << "popclicks = " << _clicks << endl;
+    return c;
+}
+
+void Button::update(sf::Vector2i mousePosition){
+    //cout << "state = " << _state << endl;
+    if(_state != State::off){
+        if(!inside(mousePosition)) _state = 0;
+        else if (_state == State::released) _state = 1;
+        //cout << "state = " << _state << endl;
+    }
+    setTextureRect(sf::IntRect(0,_ySize*_state,_xSize,_ySize));
+}
+
+bool Button::inside(sf::Vector2i position){
+    sf::FloatRect boundingBox = getGlobalBounds();
+    if (boundingBox.contains(sf::Vector2f(position.x, position.y))) return true;
+    //cout << "outside!" << endl;
+    return false;
 }
 
 void Button::handleMouseEvent(sf::Event& event){
@@ -30,30 +64,7 @@ void Button::handleMouseEvent(sf::Event& event){
             break;
         }
         //cout << "event state = " << _state << endl;
-
-}
-
-void Button::update(sf::Vector2i mousePosition){
-    //cout << "state = " << _state << endl;
-    if(!inside(mousePosition)) _state = 0;
-    else if (_state == State::released) _state = 1;
-    //cout << "state = " << _state << endl;
-    setTextureRect(sf::IntRect(0,_ySize*_state,_xSize,_ySize));
 }
 
 
-bool Button::inside(sf::Vector2i position){
-    sf::FloatRect boundingBox = getGlobalBounds();
-    if (boundingBox.contains(sf::Vector2f(position.x, position.y))) return true;
-    //cout << "outside!" << endl;
-    return false;
-}
 
-int Button::getClicks(){
-
-    int c = _clicks;
-    //cout << "popping clicks " << c << endl;
-    _clicks = 0;
-    //cout << "popclicks = " << _clicks << endl;
-    return c;
-}
