@@ -49,12 +49,14 @@ SOURCES       = ../Code/main.cpp \
 		../Code/Background.cpp \
 		../Code/utils.cpp \
 		../Code/button.cpp \
-		../Code/pokemon.cpp 
+		../Code/pokemon.cpp \
+		../Code/pokedex.cpp 
 OBJECTS       = main.o \
 		Background.o \
 		utils.o \
 		button.o \
-		pokemon.o
+		pokemon.o \
+		pokedex.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -305,8 +307,14 @@ button.o: ../Code/button.cpp ../Code/button.h \
 		../Code/utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o button.o ../Code/button.cpp
 
-pokemon.o: ../Code/pokemon.cpp ../Code/pokemon.h
+pokemon.o: ../Code/pokemon.cpp ../Code/pokemon.h \
+		../Code/utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokemon.o ../Code/pokemon.cpp
+
+pokedex.o: ../Code/pokedex.cpp ../Code/pokedex.h \
+		../Code/utils.h \
+		../Code/button.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokedex.o ../Code/pokedex.cpp
 
 ####### Install
 

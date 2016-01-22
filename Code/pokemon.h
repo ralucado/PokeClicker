@@ -1,8 +1,9 @@
 #ifndef POKEMON_H
 #define POKEMON_H
 
-class Pokemon
-{
+#include "utils.h"
+
+class Pokemon : public sf::Sprite{
 public:
     Pokemon();
 };

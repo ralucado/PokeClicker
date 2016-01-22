@@ -11,11 +11,13 @@ SOURCES += main.cpp \
     Background.cpp \
     utils.cpp \
     button.cpp \
-    pokemon.cpp
+    pokemon.cpp \
+    pokedex.cpp
 
 HEADERS += \
     Background.h \
     utils.h \
     button.h \
-    pokemon.h
+    pokemon.h \
+    pokedex.h
 
