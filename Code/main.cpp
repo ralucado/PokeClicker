@@ -10,6 +10,8 @@ using namespace std;
 
 int main(){
 
+    srand (time(NULL));
+
     //load all variables and objects
 
     bool menu = true;

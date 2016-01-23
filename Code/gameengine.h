@@ -31,7 +31,7 @@ private:
     vector<bool> _free;//
     vector<Pokemon> _pokemons;//
     vector<sf::Sprite> _sprites;
-    priority_queue< pair<int,int>, vector< pair<int,int>, Compare> _eggs;//
+    priority_queue< pair<int,int>, vector< pair<int,int>>, Compare> _eggs;//
 
     vector<bool> _canFeed;//
 

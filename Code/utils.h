@@ -22,8 +22,6 @@ public:
     }
 };
 
-srand (time(NULL));
-
 namespace State {
     enum myState {released, active, pressed, off};
 }
