@@ -51,14 +51,16 @@ SOURCES       = ../Code/main.cpp \
 		../Code/button.cpp \
 		../Code/pokedex.cpp \
 		../Code/levelbar.cpp \
-		../Code/gameengine.cpp 
+		../Code/gameengine.cpp \
+		../Code/pokemon.cpp 
 OBJECTS       = main.o \
 		Background.o \
 		utils.o \
 		button.o \
 		pokedex.o \
 		levelbar.o \
-		gameengine.o
+		gameengine.o \
+		pokemon.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -322,8 +324,15 @@ levelbar.o: ../Code/levelbar.cpp ../Code/levelbar.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o levelbar.o ../Code/levelbar.cpp
 
 gameengine.o: ../Code/gameengine.cpp ../Code/gameengine.h \
-		../Code/utils.h
+		../Code/utils.h \
+		../Code/pokedex.h \
+		../Code/button.h \
+		../Code/levelbar.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gameengine.o ../Code/gameengine.cpp
+
+pokemon.o: ../Code/pokemon.cpp ../Code/pokemon.h \
+		../Code/utils.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokemon.o ../Code/pokemon.cpp
 
 ####### Install
 

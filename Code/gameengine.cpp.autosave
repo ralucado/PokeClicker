@@ -2,6 +2,9 @@
 #include "gameengine.h"
 
 GameEngine::GameEngine(sf::RenderTarget &window, Pokedex &pokedex) : _window(window), _pokedex(pokedex){
+    if(!_eggTexture.loadFromFile("Resources/Images/egg.png")) cout << "failed to load eggs texture!" << endl;
+    if(!_pokemonTexture.loadFromFile("Resources/Images/pokemons.png")) cout << "failed to load eggs texture!" << endl;
+    
     _totalPokemons = 0;
     _totalClicks = 0;
     _canBuy = false;
