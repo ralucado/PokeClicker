@@ -2,23 +2,19 @@
 #define POKEMON_H
 
 #include "utils.h"
-#include "berry.h"
 
-class Pokemon {
+class Pokemon
+{
 public:
-    Pokemon(int num);
-    bool isAdult();
-    void addBerry();
-    void addClicks(int clicks);
-    int getNum();
+    Pokemon(int id, bool isEgg);
+    bool isEgg();
+    void hatch();
+    bool evolves();
+
 private:
+    int id;
     bool _isEgg;
-    int _num;
-    int _totalClicks;
-    int _targetClicks;
-    int _totalEvolutions;
-    int _remainingEvolutions;
-    vector<Berry> _berries;
+
 };
 
 #endif // POKEMON_H

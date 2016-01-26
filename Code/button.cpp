@@ -11,6 +11,10 @@ Button::Button(string path){
     setTextureRect(sf::IntRect(0,_ySize*_state,_xSize,_ySize));
 }
 
+bool Button::isOn(){
+    return _state != State::off;
+}
+
 void Button::turnOn(){
     _state = State::released;
 }

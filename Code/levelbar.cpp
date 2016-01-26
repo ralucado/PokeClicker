@@ -1,5 +1,7 @@
 #include "levelbar.h"
 
+LevelBar::LevelBar(){}
+
 LevelBar::LevelBar(string ePath, string fPath, int posX, int posY){
     _posX = posX;
     _posY = posY;
@@ -11,9 +13,9 @@ LevelBar::LevelBar(string ePath, string fPath, int posX, int posY){
 }
 
 void LevelBar::update(int percentage){
-    if (_percentage < 100 && _percentage != percentage){
+    if (percentage <= 100 && _percentage != percentage){
         _spriteFull.setTexture(_textureFull);
-        _percentage += percentage;
+        _percentage = percentage;
         int height = (_percentage*_textureFull.getSize().y)/100;
         _spriteFull.setPosition(_posX, _posY+_textureFull.getSize().y-height);
         _spriteFull.setTextureRect(sf::IntRect(0,_textureFull.getSize().y-height,_textureFull.getSize().x,height));

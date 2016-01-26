@@ -9,6 +9,7 @@ public:
     Button(string path);
     void turnOn();
     void turnOff();
+    bool isOn();
     int getClicks();
     void handleMouseEvent(sf::Event& event);
     void update(sf::Vector2i mousePosition);

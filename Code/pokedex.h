@@ -5,6 +5,7 @@
 #include "button.h"
 
 class Pokedex{
+
 public:
 
     Pokedex(string path, int xPokemons, int yPokemons);
@@ -12,6 +13,7 @@ public:
     void draw(sf::RenderTarget& window);
 
 private:
+
     int _xPokemons, _yPokemons;
     sf::Texture _texture;
     vector<sf::Sprite> _sprites;

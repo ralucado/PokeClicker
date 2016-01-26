@@ -3,9 +3,10 @@
 
 #include "utils.h"
 
-class Berry
-{
+class Berry{
+
 public:
+
     Berry();
 };
 

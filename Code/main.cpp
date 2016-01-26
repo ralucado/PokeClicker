@@ -2,45 +2,72 @@
 #include "button.h"
 #include "pokedex.h"
 #include "levelbar.h"
-#include "gameengine.h"
 #include "Background.h"
 
 
 using namespace std;
+/*
+void update(int clicks){
+
+}
+*/
+bool canFeed(int i){
+    return false;
+}
+
+void feed(int i){
+
+}
+/*
+bool canBuy(){
+
+}*/
+
+void requestEgg(){
+
+}
+
 
 int main(){
 
+   //load all variables and objects
     srand (time(NULL));
-
-    //load all variables and objects
-
-    bool menu = true;
-   // int clicks = 0;
     sf::Event event;
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Poke Clicker YOYOOYOOOO OOOOOH so gut at dis geim");
+    Background background("Resources/Images/background.png");
+    Background pokedexBkg("Resources/Images/pokedexbackground.png");
+    Pokedex pokedex("Resources/Images/icons.png",14,11);
+    vector<Button*> buttons;
+    vector<Button*> feeders(3);
+    Button pokeball("Resources/Images/pokeball.png");
+    Button buyEgg("Resources/Images/buyEgg.png");
+    Button toPokedex("Resources/Images/pokedexbutton.png");
+    Button back("Resources/Images/backButton.png");
+    LevelBar eggBar("Resources/Images/eggBarE.png", "Resources/Images/eggBarF.png", 894, 509);
+    sf::Texture _pokemonTexture, eggTexture;
+
+
 
 //Main environment
-    Background background("Resources/Images/background.png");
+    bool menu = true;
+    bool canBuy = false;
+    int eggClicks = 0;
+    int eggPrice = 4;
 
     //makin buttons, making bacon buttons, taking buttons and then put them in a button, BACON BUTTOOOONS....
-    vector<Button*> buttons;
 
-    Button pokeball("Resources/Images/pokeball.png");
     pokeball.setPosition(425,509);
     buttons.push_back(&pokeball);
     pokeball.turnOn();
 
-    Button buyEgg("Resources/Images/buyEgg.png");
     buyEgg.setPosition(643,509);
     buttons.push_back(&buyEgg);
 
-    Button toPokedex("Resources/Images/pokedexbutton.png");
     toPokedex.setPosition(111,509);
     buttons.push_back(&toPokedex);
     toPokedex.turnOn();
 
     //FEEDEEEERS
-    vector<Button*> feeders(3);
     int offset = 333;
     for(uint i = 0; i < feeders.size(); ++i){
         feeders[i] = new Button("Resources/Images/feedButton.png");
@@ -50,17 +77,14 @@ int main(){
 
 
 //Pokedex environment
-    Background pokedexBkg("Resources/Images/pokedexbackground.png");
 
-    Pokedex pokedex("Resources/Images/icons.png",14,11);
-
-    Button back("Resources/Images/backButton.png");
     back.setPosition(881,618);
     back.turnOn();
 /*
     LevelBar bar("Resources/Images/lvlbarE.png", "Resources/Images/lvlbarF.png", 941, 24);
 */
-     GameEngine gameEngine(window, pokedex);
+    if(!_pokemonTexture.loadFromFile("Resources/Images/pokemons.png"))cout << "couldnt load pokemon sprite texture!" << endl;
+    if(!eggTexture.loadFromFile("Resources/Images/egg.png")) cout << "couldnt load egg texture!" << endl;
 
 
 //game loop
@@ -109,37 +133,49 @@ int main(){
             }
 
             //pokeball button
-            gameEngine.update(pokeball.getClicks());
+            eggClicks += pokeball.getClicks();
+            cout << eggClicks << endl;
 
             //feed buttons
             for(uint i = 0; i < feeders.size(); ++i){
-                if(gameEngine.canFeed(i)) feeders[i]->turnOn();
+                if(canFeed(i)) feeders[i]->turnOn();
             }
 
             for(uint i = 0; i < feeders.size(); ++i){
                 if(feeders[i]->getClicks() > 0){
                     feeders[i]->turnOff();
-                    gameEngine.feed(i);
+                    feed(i);
                 }
             }
 
             //buy egg button
-            if(gameEngine.canBuy()) buyEgg.turnOn();
+            if(!buyEgg.isOn() && canBuy) buyEgg.turnOn();
 
             if(buyEgg.getClicks() > 0){
                 buyEgg.turnOff();
-                gameEngine.requestEgg();
+                canBuy = false;
+                eggClicks = eggClicks - eggPrice;
+                requestEgg();
+                eggPrice *= 2;
+                eggBar.update(0);
+                cout << "new egg Price" << eggPrice << endl;
             }
 
             //switch to pokedex
             if(toPokedex.getClicks() != 0) menu = false;
+
+            //update stuff
+            eggBar.update((eggClicks*100)/eggPrice);
+            cout << "bar status" << (eggClicks*100)/eggPrice << endl;
+            if(!canBuy)
+                if(eggClicks >= eggPrice) canBuy = true;
 
         //draw all the stuff
             window.clear();
             background.draw(window);
             for (uint i = 0; i < buttons.size(); ++i) window.draw(*buttons[i]);
             for (uint i = 0; i < feeders.size(); ++i) window.draw(*feeders[i]);
-            gameEngine.draw();
+            eggBar.draw(window);
         }
 
 
@@ -162,5 +198,9 @@ int main(){
         }
 
         window.display();
+    }
+
+    for(uint i = 0; i < feeders.size(); ++i){
+        delete feeders[i];
     }
 }
