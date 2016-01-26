@@ -1,32 +1,12 @@
 #include "utils.h"
 #include "button.h"
+#include "slot.h"
 #include "pokedex.h"
 #include "levelbar.h"
 #include "Background.h"
 
 
 using namespace std;
-/*
-void update(int clicks){
-
-}
-*/
-bool canFeed(int i){
-    return false;
-}
-
-void feed(int i){
-
-}
-/*
-bool canBuy(){
-
-}*/
-
-void requestEgg(){
-
-}
-
 
 int main(){
 
@@ -37,6 +17,7 @@ int main(){
     Background background("Resources/Images/background.png");
     Background pokedexBkg("Resources/Images/pokedexbackground.png");
     Pokedex pokedex("Resources/Images/icons.png",14,11);
+    vector<Slot> sslots;
     vector<Button*> buttons;
     vector<Button*> feeders(3);
     Button pokeball("Resources/Images/pokeball.png");
@@ -44,15 +25,19 @@ int main(){
     Button toPokedex("Resources/Images/pokedexbutton.png");
     Button back("Resources/Images/backButton.png");
     LevelBar eggBar("Resources/Images/eggBarE.png", "Resources/Images/eggBarF.png", 894, 509);
-    sf::Texture _pokemonTexture, eggTexture;
+   // LevelBar _healthBar ("Resources/Images/lvlbarE.png","Resources/Images/lvlbarF.png", 23 + 253, 23);
+   // LevelBar _berryBar("Resources/Images/berrybarE.png","Resources/Images/berrybarF.png", 23 + 253, 23 + 253);
+    sf::Texture pokemonTexture, eggTexture;
 
 
 
 //Main environment
+    int newClicks;
     bool menu = true;
     bool canBuy = false;
     int eggClicks = 0;
     int eggPrice = 4;
+    int freeSlot;
 
     //makin buttons, making bacon buttons, taking buttons and then put them in a button, BACON BUTTOOOONS....
 
@@ -67,8 +52,17 @@ int main(){
     buttons.push_back(&toPokedex);
     toPokedex.turnOn();
 
-    //FEEDEEEERS
+    if(!pokemonTexture.loadFromFile("Resources/Images/pokemons.png"))cout << "couldnt load pokemon sprite texture!" << endl;
+    if(!eggTexture.loadFromFile("Resources/Images/egg.png")) cout << "couldnt load egg texture!" << endl;
+
+    //SLOTS
     int offset = 333;
+    for(uint i = 0; i<3; ++i){
+        sslots.push_back(Slot(pokemonTexture, eggTexture, 24 + i*offset, 24));
+    }
+
+    //FEEDEEEERS
+
     for(uint i = 0; i < feeders.size(); ++i){
         feeders[i] = new Button("Resources/Images/feedButton.png");
         feeders[i]->setPosition(24 + i*offset,275);
@@ -83,12 +77,13 @@ int main(){
 /*
     LevelBar bar("Resources/Images/lvlbarE.png", "Resources/Images/lvlbarF.png", 941, 24);
 */
-    if(!_pokemonTexture.loadFromFile("Resources/Images/pokemons.png"))cout << "couldnt load pokemon sprite texture!" << endl;
-    if(!eggTexture.loadFromFile("Resources/Images/egg.png")) cout << "couldnt load egg texture!" << endl;
+
+
 
 
 //game loop
     while(window.isOpen()){
+        //cout << "ekisku te cierras" << endl;
 
         //handle events
         while(window.pollEvent(event)){
@@ -133,21 +128,27 @@ int main(){
             }
 
             //pokeball button
-            eggClicks += pokeball.getClicks();
-            cout << eggClicks << endl;
+            newClicks = pokeball.getClicks();
+            eggClicks += newClicks;
+            //cout << eggClicks << endl;
 
             //feed buttons
             for(uint i = 0; i < feeders.size(); ++i){
-                if(canFeed(i)) feeders[i]->turnOn();
+                if(sslots[i].canFeed()) feeders[i]->turnOn();
             }
-
             for(uint i = 0; i < feeders.size(); ++i){
                 if(feeders[i]->getClicks() > 0){
                     feeders[i]->turnOff();
-                    feed(i);
+                    sslots[i].buyBerry();
                 }
             }
 
+            //cout << "test1" << endl;
+            //slots
+            for (uint i =  0; i < sslots.size(); ++i){
+                sslots[i].update(newClicks);
+            }
+            //cout << "test2" << endl;
             //buy egg button
             if(!buyEgg.isOn() && canBuy) buyEgg.turnOn();
 
@@ -155,27 +156,38 @@ int main(){
                 buyEgg.turnOff();
                 canBuy = false;
                 eggClicks = eggClicks - eggPrice;
-                requestEgg();
                 eggPrice *= 2;
-                eggBar.update(0);
-                cout << "new egg Price" << eggPrice << endl;
+                eggBar.update((eggClicks*100)/eggPrice);
+                sslots[freeSlot].addPokemon(rand()%15,15);
+                //cout << "new egg Price" << eggPrice << endl;
+
             }
 
             //switch to pokedex
             if(toPokedex.getClicks() != 0) menu = false;
 
             //update stuff
-            eggBar.update((eggClicks*100)/eggPrice);
-            cout << "bar status" << (eggClicks*100)/eggPrice << endl;
-            if(!canBuy)
-                if(eggClicks >= eggPrice) canBuy = true;
+            eggBar.update((eggClicks*100)/eggPrice);/*
+            _healthBar.update((eggClicks*100)/eggPrice);
+            _berryBar.update((eggClicks*100)/eggPrice);*/
+            //cout << "bar status" << (eggClicks*100)/eggPrice << endl;
+            if(!canBuy){
+                freeSlot = -1;
+                for (uint i =  0; i < sslots.size(); ++i){
+                    if(sslots[i].isFree()) freeSlot = i;
+                }
+                if(eggClicks >= eggPrice && freeSlot != -1) canBuy = true;
+            }
 
         //draw all the stuff
             window.clear();
             background.draw(window);
             for (uint i = 0; i < buttons.size(); ++i) window.draw(*buttons[i]);
             for (uint i = 0; i < feeders.size(); ++i) window.draw(*feeders[i]);
-            eggBar.draw(window);
+            for (uint i = 0; i < sslots.size(); ++i) sslots[i].draw(window);
+            eggBar.draw(window);/*
+            _healthBar.draw(window);
+            _berryBar.draw(window);*/
         }
 
 

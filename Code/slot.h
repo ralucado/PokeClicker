@@ -9,23 +9,29 @@
 class Slot{
 
 public:
-    Slot(sf::Texture& pokemonTexture, sf::Texture& eggTexture, int posX, int posY);
     bool isFree();
-    void addPokemon(int id, int targetClicks);
-    void update(int clicks);
+    bool canFeed();
     void buyBerry();
-    void draw(sf::RenderWindow& window);
+    void update(int clicks);
+    void draw(sf::RenderTarget& window);
+    void addPokemon(int id, int targetClicks);
+    Slot(sf::Texture &pokemonTexture, sf::Texture &eggTexture, int posX, int posY);
     
 private:
-    bool _free;
     int _id;
+    bool _free;
+    int _berryClicks;
+    int _targetClicks;
+    int _pokemonClicks;
+    int _newBerryClicks;
+
+    Pokemon _pokemon;
+    sf::Sprite _sprite;
+    LevelBar _berryBar;
+    LevelBar _healthBar;
+    vector<Berry> _berries;
     sf::Texture& _eggTexture;
     sf::Texture& _pokemonTexture;
-    sf::Sprite _sprite;
-    Pokemon _pokemon;
-    vector<Berry> _berries;
-    LevelBar _healthBar;
-    LevelBar _berryBar;
 };
 
 #endif // SLOT_H

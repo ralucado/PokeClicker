@@ -7,6 +7,7 @@ class LevelBar{
 public:
     LevelBar();
     LevelBar(string ePath, string fPath,int posX,int posY);
+    void setParameters(string ePath, string fPath,int posX,int posY);
     void update(int percentage);
     void draw(sf::RenderTarget& window);
 

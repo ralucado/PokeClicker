@@ -4,7 +4,7 @@ Button::Button(string path){
     cout << "init!" << endl;
     _clicks = 0;
     _state = State::off;
-    if(!_texture.loadFromFile(path)) cerr << "failed to load button texture!!" << endl;
+    if(!_texture.loadFromFile(path)) cout << "failed to load button texture!!" << endl;
     setTexture(_texture);
     _xSize = _texture.getSize().x;
     _ySize = _texture.getSize().y/4;

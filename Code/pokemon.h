@@ -6,13 +6,14 @@
 class Pokemon
 {
 public:
-    Pokemon(int id, bool isEgg);
+    Pokemon();
+    Pokemon(int id);
     bool isEgg();
-    void hatch();
+    void evolve();
     bool evolves();
 
 private:
-    int id;
+    int _id;
     bool _isEgg;
 
 };

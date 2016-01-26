@@ -1,18 +1,23 @@
 #include "pokemon.h"
 
-Pokemon::Pokemon(int id, bool isEgg)
-{
+Pokemon::Pokemon(){}
 
+Pokemon::Pokemon(int id)
+{
+    _id = id;
+    _isEgg = false;
 }
 
 bool Pokemon::isEgg(){
     return _isEgg;
 }
 
-void Pokemon::hatch(){
-    _isEgg = false;
+void Pokemon::evolve(){
+    if(_isEgg) _isEgg = false;
+    else ++_id;
 }
 
 bool Pokemon::evolves(){
     return EVOLVES[_id];
 }
+

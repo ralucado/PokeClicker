@@ -5,8 +5,18 @@ LevelBar::LevelBar(){}
 LevelBar::LevelBar(string ePath, string fPath, int posX, int posY){
     _posX = posX;
     _posY = posY;
-    if(!_textureEmpty.loadFromFile(ePath)) cerr << "failed to load empty bar texture!!" << endl;
-    if(!_textureFull.loadFromFile(fPath)) cerr << "failed to load full bar texture!!" << endl;
+    if(!_textureEmpty.loadFromFile(ePath)) cout << "failed to load empty bar texture!!" << endl;
+    if(!_textureFull.loadFromFile(fPath)) cout << "failed to load full bar texture!!" << endl;
+    _spriteEmpty.setTexture(_textureEmpty);
+    _spriteEmpty.setPosition(posX, posY);
+    update(0);
+}
+
+void LevelBar::setParameters(string ePath, string fPath, int posX, int posY){
+    _posX = posX;
+    _posY = posY;
+    if(!_textureEmpty.loadFromFile(ePath)) cout << "failed to load empty bar texture!!" << endl;
+    if(!_textureFull.loadFromFile(fPath)) cout << "failed to load full bar texture!!" << endl;
     _spriteEmpty.setTexture(_textureEmpty);
     _spriteEmpty.setPosition(posX, posY);
     update(0);

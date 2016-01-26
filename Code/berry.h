@@ -3,11 +3,14 @@
 
 #include "utils.h"
 
-class Berry{
+class Berry : public sf::Sprite{
 
 public:
 
     Berry();
+
+private:
+
 };
 
 #endif // BERRY_H
