@@ -5,11 +5,15 @@ Pokemon::Pokemon(){}
 Pokemon::Pokemon(int id)
 {
     _id = id;
-    _isEgg = false;
+    _isEgg = true;
 }
 
 bool Pokemon::isEgg(){
     return _isEgg;
+}
+
+int Pokemon::getID(){
+    return _id;
 }
 
 void Pokemon::evolve(){

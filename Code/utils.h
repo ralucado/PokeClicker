@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include <queue>
+#include <stack>
 #include <string>
 #include <vector>
 #include <time.h>

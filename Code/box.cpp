@@ -20,6 +20,10 @@ bool Box::canFeed(){
     return false;
 }
 
+stack<int>& Box::getStack(){
+    return _finished;
+}
+
 void Box::addPokemon(int id, int targetClicks){
     _targetClicks = targetClicks;
     _newBerryClicks = targetClicks;
@@ -31,17 +35,38 @@ void Box::addPokemon(int id, int targetClicks){
 
 void Box::update(int clicks){
     if(!_free){
-        _berryClicks += clicks;
-        _pokemonClicks += clicks;
-        _berryBar.update((_berryClicks*100)/_newBerryClicks);
-        cout << "updating berry bar with perc " << (_berryClicks*100)/_newBerryClicks << endl;
-        _healthBar.update((_pokemonClicks*100)/_targetClicks);
-        cout << "updating poke bar with perc " << (_pokemonClicks*100)/_targetClicks;
+        if(_pokemonClicks < _targetClicks){
+            _pokemonClicks += clicks;
+            int perc = (_pokemonClicks*100)/_targetClicks;
+            _healthBar.update(perc);
+            cout << "updating poke bar with perc " << perc;
+            if(_pokemon.isEgg()){
+                int spriteNum = (perc/25);
+                cout << spriteNum << endl;
+                if(spriteNum == 4) _pokemon.evolve();
+                _sprite.setTextureRect(sf::IntRect(0,spriteNum*(_eggTexture.getSize().y/4),_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
+            }
+            else{
+                if(perc >= 100){
+                    _finished.push(_pokemon.getID());
+                    if(_pokemon.evolves()) _pokemon.evolve();
+                    else freeSlot();
+                }
+            }
+        }
+        if(_berryClicks < _newBerryClicks){
+            _berryClicks += clicks;
+            _berryBar.update((_berryClicks*100)/_newBerryClicks);
+        //cout << "updating berry bar with perc " << (_berryClicks*100)/_newBerryClicks << endl;
+        }
     }
-    //if(_pokemon.isEgg()) _sprite.setTextureRect(sf::IntRect(0,(perc/25)*_eggTexture.getSize().y/4,_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
 }
 
 void Box::buyBerry(){
+
+}
+
+void Box::freeSlot(){
 
 }
 

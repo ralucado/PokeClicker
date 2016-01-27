@@ -16,6 +16,7 @@ public:
     void draw(sf::RenderTarget& window);
     void addPokemon(int id, int targetClicks);
     Box(sf::Texture &pokemonTexture, sf::Texture &eggTexture, int posX, int posY);
+    stack<int>& getStack();
     
 private:
     int _id;
@@ -26,12 +27,15 @@ private:
     int _newBerryClicks;
 
     Pokemon _pokemon;
+    stack<int> _finished;
     sf::Sprite _sprite;
     LevelBar _berryBar;
     LevelBar _healthBar;
     vector<Berry> _berries;
     sf::Texture& _eggTexture;
     sf::Texture& _pokemonTexture;
+
+    void freeSlot();
 };
 
 #endif // BOX_H

@@ -9,6 +9,7 @@ public:
     Pokemon();
     Pokemon(int id);
     bool isEgg();
+    int getID();
     void evolve();
     bool evolves();
 

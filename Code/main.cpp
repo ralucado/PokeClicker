@@ -25,8 +25,6 @@ int main(){
     Button toPokedex("Resources/Images/pokedexbutton.png");
     Button back("Resources/Images/backButton.png");
     LevelBar eggBar("Resources/Images/eggBarE.png", "Resources/Images/eggBarF.png", 894, 509);
-   // LevelBar _healthBar ("Resources/Images/lvlbarE.png","Resources/Images/lvlbarF.png", 23 + 253, 23);
-   // LevelBar _berryBar("Resources/Images/berrybarE.png","Resources/Images/berrybarF.png", 23 + 253, 23 + 253);
     sf::Texture pokemonTexture, eggTexture;
 
 
@@ -66,7 +64,6 @@ int main(){
     for(uint i = 0; i < feeders.size(); ++i){
         feeders[i] = new Button("Resources/Images/feedButton.png");
         feeders[i]->setPosition(24 + i*offset,275);
-        //feeders[i]->turnOn();
     }
 
 
@@ -74,12 +71,6 @@ int main(){
 
     back.setPosition(881,618);
     back.turnOn();
-/*
-    LevelBar bar("Resources/Images/lvlbarE.png", "Resources/Images/lvlbarF.png", 941, 24);
-*/
-
-
-
 
 //game loop
     while(window.isOpen()){
@@ -167,10 +158,8 @@ int main(){
             if(toPokedex.getClicks() != 0) menu = false;
 
             //update stuff
-            eggBar.update((eggClicks*100)/eggPrice);/*
-            _healthBar.update((eggClicks*100)/eggPrice);
-            _berryBar.update((eggClicks*100)/eggPrice);*/
-            //cout << "bar status" << (eggClicks*100)/eggPrice << endl;
+            eggBar.update((eggClicks*100)/eggPrice);
+
             if(!canBuy){
                 freeBox = -1;
                 for (uint i =  0; i < boxes.size(); ++i){
@@ -185,14 +174,19 @@ int main(){
             for (uint i = 0; i < buttons.size(); ++i) window.draw(*buttons[i]);
             for (uint i = 0; i < feeders.size(); ++i) window.draw(*feeders[i]);
             for (uint i = 0; i < boxes.size(); ++i) boxes[i]->draw(window);
-            eggBar.draw(window);/*
-            _healthBar.draw(window);
-            _berryBar.draw(window);*/
+            eggBar.draw(window);
         }
 
 
     //handle pokedex scene
         else{
+
+            for(uint i = 0; i < boxes.size(); ++i){
+                while(!boxes[i]->getStack().empty()){
+                    pokedex.addPokemon(boxes[i]->getStack().top());
+                    boxes[i]->getStack().pop();
+                }
+            }
 
             //update inputs
             back.update(sf::Mouse::getPosition(window));
