@@ -52,8 +52,8 @@ SOURCES       = ../Code/main.cpp \
 		../Code/pokedex.cpp \
 		../Code/levelbar.cpp \
 		../Code/berry.cpp \
-		../Code/slot.cpp \
-		../Code/pokemon.cpp 
+		../Code/pokemon.cpp \
+		../Code/box.cpp 
 OBJECTS       = main.o \
 		Background.o \
 		utils.o \
@@ -61,8 +61,8 @@ OBJECTS       = main.o \
 		pokedex.o \
 		levelbar.o \
 		berry.o \
-		slot.o \
-		pokemon.o
+		pokemon.o \
+		box.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -299,8 +299,11 @@ compiler_clean:
 
 main.o: ../Code/main.cpp ../Code/utils.h \
 		../Code/button.h \
-		../Code/pokedex.h \
+		../Code/box.h \
+		../Code/berry.h \
+		../Code/pokemon.h \
 		../Code/levelbar.h \
+		../Code/pokedex.h \
 		../Code/Background.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Code/main.cpp
 
@@ -328,15 +331,16 @@ berry.o: ../Code/berry.cpp ../Code/berry.h \
 		../Code/utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o berry.o ../Code/berry.cpp
 
-slot.o: ../Code/slot.cpp ../Code/slot.h \
+pokemon.o: ../Code/pokemon.cpp ../Code/pokemon.h \
+		../Code/utils.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokemon.o ../Code/pokemon.cpp
+
+box.o: ../Code/box.cpp ../Code/box.h \
 		../Code/utils.h \
 		../Code/berry.h \
 		../Code/pokemon.h \
 		../Code/levelbar.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o slot.o ../Code/slot.cpp
-
-pokemon.o: ../Code/pokemon.cpp ../Code/pokemon.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokemon.o ../Code/pokemon.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o box.o ../Code/box.cpp
 
 ####### Install
 

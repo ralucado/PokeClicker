@@ -1,0 +1,21 @@
+LIBS=-lsfml-graphics -lsfml-window -lsfml-system
+FLAGS=-std=c++11 -Wall
+thegame: background.o berry.o box.o button.o levelbar.o pokedex.o pokemon.o main.o
+	g++ -o thegame background.o berry.o box.o button.o levelbar.o pokedex.o pokemon.o main.o $(LIBS)
+
+main.o: main.cpp
+	g++ -c $(FLAGS) main.cpp -o main.o
+background.o:
+	g++ -c $(FLAGS) background.cpp -o background.o
+berry.o:
+	g++ -c $(FLAGS) berry.cpp -o berry.o
+box.o:
+	g++ -c $(FLAGS) box.cpp -o box.o
+button.o:
+	g++ -c $(FLAGS) button.cpp -o button.o
+levelbar.o:
+	g++ -c $(FLAGS) levelbar.cpp -o levelbar.o
+pokedex.o:
+	g++ -c $(FLAGS) pokedex.cpp -o pokedex.o
+pokemon.o:
+	g++ -c $(FLAGS) pokemon.cpp -o pokemon.o

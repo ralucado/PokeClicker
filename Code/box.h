@@ -1,12 +1,12 @@
-#ifndef SLOT_H
-#define SLOT_H
+#ifndef BOX_H
+#define BOX_H
 
 #include "utils.h"
 #include "berry.h"
 #include "pokemon.h"
 #include "levelbar.h"
 
-class Slot{
+class Box{
 
 public:
     bool isFree();
@@ -15,7 +15,7 @@ public:
     void update(int clicks);
     void draw(sf::RenderTarget& window);
     void addPokemon(int id, int targetClicks);
-    Slot(sf::Texture &pokemonTexture, sf::Texture &eggTexture, int posX, int posY);
+    Box(sf::Texture &pokemonTexture, sf::Texture &eggTexture, int posX, int posY);
     
 private:
     int _id;
@@ -34,4 +34,4 @@ private:
     sf::Texture& _pokemonTexture;
 };
 
-#endif // SLOT_H
+#endif // BOX_H

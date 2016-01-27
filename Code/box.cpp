@@ -1,26 +1,26 @@
-#include "slot.h"
+#include "box.h"
 
-Slot::Slot(sf::Texture& pokemonTexture, sf::Texture& eggTexture, int posX, int posY) : _eggTexture(eggTexture), _pokemonTexture(pokemonTexture){
+Box::Box(sf::Texture& pokemonTexture, sf::Texture& eggTexture, int posX, int posY) : _eggTexture(eggTexture), _pokemonTexture(pokemonTexture){
     _free = true;
     _id = -1;
     _sprite.setPosition(posX,posY);
-    _healthBar.setParameters("Resources/Images/lvlbarE.png","Resources/Images/lvlbarF.png", posX + 253, posY);
-    _berryBar.setParameters("Resources/Images/berrybarE.png","Resources/Images/berrybarF.png", posX + 253, posY + 253);
+    _healthBar.setParameters("Resources/Images/lvlbarE.png","Resources/Images/lvlbarF.png", posX + 251, posY);
+    _berryBar.setParameters("Resources/Images/berrybarE.png","Resources/Images/berrybarF.png", posX + 251, posY + 251);
     _berryClicks = 0;
     _targetClicks = 0;
     _pokemonClicks = 0;
     _newBerryClicks = 0;
 }
 
-bool Slot::isFree(){
+bool Box::isFree(){
     return _free;
 }
 
-bool Slot::canFeed(){
+bool Box::canFeed(){
     return false;
 }
 
-void Slot::addPokemon(int id, int targetClicks){
+void Box::addPokemon(int id, int targetClicks){
     _targetClicks = targetClicks;
     _newBerryClicks = targetClicks;
     _free = false;
@@ -29,7 +29,7 @@ void Slot::addPokemon(int id, int targetClicks){
     _sprite.setTextureRect(sf::IntRect(0,0,_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
 }
 
-void Slot::update(int clicks){
+void Box::update(int clicks){
     if(!_free){
         _berryClicks += clicks;
         _pokemonClicks += clicks;
@@ -41,11 +41,11 @@ void Slot::update(int clicks){
     //if(_pokemon.isEgg()) _sprite.setTextureRect(sf::IntRect(0,(perc/25)*_eggTexture.getSize().y/4,_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
 }
 
-void Slot::buyBerry(){
+void Box::buyBerry(){
 
 }
 
-void Slot::draw(sf::RenderTarget &window){
+void Box::draw(sf::RenderTarget &window){
     window.draw(_sprite);
     _healthBar.draw(window);
     _berryBar.draw(window);

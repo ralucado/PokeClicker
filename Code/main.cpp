@@ -1,6 +1,6 @@
 #include "utils.h"
 #include "button.h"
-#include "slot.h"
+#include "box.h"
 #include "pokedex.h"
 #include "levelbar.h"
 #include "Background.h"
@@ -17,7 +17,7 @@ int main(){
     Background background("Resources/Images/background.png");
     Background pokedexBkg("Resources/Images/pokedexbackground.png");
     Pokedex pokedex("Resources/Images/icons.png",14,11);
-    vector<Slot> sslots;
+    vector<Box*> boxes(3);
     vector<Button*> buttons;
     vector<Button*> feeders(3);
     Button pokeball("Resources/Images/pokeball.png");
@@ -37,7 +37,7 @@ int main(){
     bool canBuy = false;
     int eggClicks = 0;
     int eggPrice = 4;
-    int freeSlot;
+    int freeBox;
 
     //makin buttons, making bacon buttons, taking buttons and then put them in a button, BACON BUTTOOOONS....
 
@@ -58,7 +58,7 @@ int main(){
     //SLOTS
     int offset = 333;
     for(uint i = 0; i<3; ++i){
-        sslots.push_back(Slot(pokemonTexture, eggTexture, 24 + i*offset, 24));
+        boxes[i] = new Box(pokemonTexture, eggTexture, 24 + i*offset, 24);
     }
 
     //FEEDEEEERS
@@ -134,19 +134,19 @@ int main(){
 
             //feed buttons
             for(uint i = 0; i < feeders.size(); ++i){
-                if(sslots[i].canFeed()) feeders[i]->turnOn();
+                if(boxes[i]->canFeed()) feeders[i]->turnOn();
             }
             for(uint i = 0; i < feeders.size(); ++i){
                 if(feeders[i]->getClicks() > 0){
                     feeders[i]->turnOff();
-                    sslots[i].buyBerry();
+                    boxes[i]->buyBerry();
                 }
             }
 
             //cout << "test1" << endl;
             //slots
-            for (uint i =  0; i < sslots.size(); ++i){
-                sslots[i].update(newClicks);
+            for (uint i =  0; i < boxes.size(); ++i){
+                boxes[i]->update(newClicks);
             }
             //cout << "test2" << endl;
             //buy egg button
@@ -158,7 +158,7 @@ int main(){
                 eggClicks = eggClicks - eggPrice;
                 eggPrice *= 2;
                 eggBar.update((eggClicks*100)/eggPrice);
-                sslots[freeSlot].addPokemon(rand()%15,15);
+                boxes[freeBox]->addPokemon(rand()%15,15);
                 //cout << "new egg Price" << eggPrice << endl;
 
             }
@@ -172,11 +172,11 @@ int main(){
             _berryBar.update((eggClicks*100)/eggPrice);*/
             //cout << "bar status" << (eggClicks*100)/eggPrice << endl;
             if(!canBuy){
-                freeSlot = -1;
-                for (uint i =  0; i < sslots.size(); ++i){
-                    if(sslots[i].isFree()) freeSlot = i;
+                freeBox = -1;
+                for (uint i =  0; i < boxes.size(); ++i){
+                    if(boxes[i]->isFree()) freeBox = i;
                 }
-                if(eggClicks >= eggPrice && freeSlot != -1) canBuy = true;
+                if(eggClicks >= eggPrice && freeBox != -1) canBuy = true;
             }
 
         //draw all the stuff
@@ -184,7 +184,7 @@ int main(){
             background.draw(window);
             for (uint i = 0; i < buttons.size(); ++i) window.draw(*buttons[i]);
             for (uint i = 0; i < feeders.size(); ++i) window.draw(*feeders[i]);
-            for (uint i = 0; i < sslots.size(); ++i) sslots[i].draw(window);
+            for (uint i = 0; i < boxes.size(); ++i) boxes[i]->draw(window);
             eggBar.draw(window);/*
             _healthBar.draw(window);
             _berryBar.draw(window);*/
@@ -214,5 +214,11 @@ int main(){
 
     for(uint i = 0; i < feeders.size(); ++i){
         delete feeders[i];
+    }/*
+    for(uint i = 0; i < buttons.size(); ++i){
+        delete buttons[i];
+    }*/
+    for(uint i = 0; i < boxes.size(); ++i){
+        delete boxes[i];
     }
 }
