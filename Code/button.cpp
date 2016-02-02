@@ -60,7 +60,7 @@ void Button::handleMouseEvent(sf::Event& event){
                 if(_state == State::pressed){
                     _state = State::active;
                     ++_clicks;
-                    cout << "Click!" << _clicks << endl;
+                    //cout << "Click!" << _clicks << endl;
                 }
             break;
 

@@ -125,7 +125,7 @@ int main(){
             //pokeball button
             newClicks = pokeball.getClicks();
             eggClicks += newClicks;
-            cout << "clicat pokeball " << newClicks << " time/s" << endl;
+            //cout << "clicat pokeball " << newClicks << " time/s" << endl;
 
             //feed buttons
             for(uint i = 0; i < feeders.size(); ++i){
@@ -133,11 +133,12 @@ int main(){
                     if(!feeders[i]->isOn())
                         if(boxes[i]->canFeed()) feeders[i]->turnOn();
                     if(feeders[i]->getClicks() > 0){
-                        cout << "clicat feeder " << i << endl;
+                        //cout << "clicat feeder " << i << endl;
                         boxes[i]->buyBerry();
                         feeders[i]->turnOff();
                     }
                 }
+                else if(feeders[i]->isOn()) feeders[i]->turnOff();
             }
 
             //slots
@@ -152,14 +153,11 @@ int main(){
                 buyEgg.turnOff();
                 canBuy = false;
                 eggClicks = eggClicks - eggPrice;
-                eggPrice *= 2;
+                //eggPrice *= 2;
                 eggBar.update((eggClicks*100)/eggPrice);
                 boxes[freeBox]->addPokemon(eggs.top().first,15);
                 eggs.pop();
             }
-
-            //switch to pokedex
-            if(toPokedex.getClicks() != 0) menu = false;
 
             //update stuff
             eggBar.update((eggClicks*100)/eggPrice);
@@ -171,6 +169,9 @@ int main(){
                 }
                 if(eggClicks >= eggPrice && freeBox != -1) canBuy = true;
             }
+
+        //switch to pokedex
+        if(toPokedex.getClicks() != 0) menu = false;
 
         //draw all the stuff
             window.clear();
@@ -188,6 +189,7 @@ int main(){
             for(uint i = 0; i < boxes.size(); ++i){
                 while(!boxes[i]->getStack().empty()){
                     pokedex.addPokemon(boxes[i]->getStack().top());
+                    cout << "adding to pokedex ID: " << boxes[i]->getStack().top() << endl;
                     boxes[i]->getStack().pop();
                 }
             }

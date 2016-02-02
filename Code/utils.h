@@ -31,14 +31,17 @@ const vector<int> FROM_EGG = {1, 4, 7, 10, 13, 16, 19, 21, 23, 25, 27, 29, 32, 3
                             74, 77, 79, 81, 83, 84, 86, 88, 90, 92, 95, 96, 98, 100, 102, 104, 106, 108, 109, 111, 113, 114, 115, 116, 118, 120,
                             122, 123, 124, 125, 126, 127, 128, 129, 131, 132, 133, 133, 133, 137, 138, 140, 142, 143, 144, 145, 146, 147, 150, 151};
 
-const vector<bool> EVOLVES = {true, true, false, true, true, false, true, true, false, true, true, false, true, true, false, true, true, false, true, false,
-                              true, false, true, false, true, false, true, false, true, true, false, true, true, false, true, false, true, false, true, false,
-                              true, false, true, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true,
-                              true, false, true, true, false, true, true, false, true, true, false, true, false, true, true, false, true, false, true, false, true,
-                              false, false, true, false, true, false, true, false, true, false, true, true, false, false, true, false, true, false, true, false,
-                              true, false, true, false, false, false, false, true, false, true, false, false, false, false, true, false, true, false, true, false,
-                              false, false, false, false, false, false, false, true, false, false, false, true, true, true, false, false, true, false, true, false,
-                              false, false, false, false, false, true, true, false, false, false};
+const vector<bool> EVOLVES = {true,  true,  false, true,  true,  false, true,  true,  false, true,  true,  false, true,  true,
+                              false, true,  true,  false, true,  false, true,  false, true,  false, true,  false, true,  false,
+                              true,  true,  false, true,  true,  false, true,  false, true,  false, true,  false, true,  false,
+                              true,  true,  false, true,  false, true,  false, true,  false, true,  false, true,  false, true,
+                              false, true,  false, true,  true,  false, true,  true,  false, true,  true,  false, true,  true,
+                              false, true,  false, true,  true,  false, true,  false, true,  false, true,  false, false, true,
+                              false, true,  false, true,  false, true,  false, true,  true,  false, false, true,  false, true,
+                              false, true,  false, true,  false, true,  false, true,  false, false, true,  false, true,  false,
+                              false, false, false, true,  false, true,  false, true,  false, false, false, false, false, false,
+                              false, false, true,  false, false, false, true,  false, false, false, false, true,  false, true,
+                              false, false, false, false, false, false, true,  true,  false, false, false};
 /*
 const bool fromEgg[152] = {true, false, false, true, false, false, true, false, false, true, false, false, true, false, false, true, false, false,
                            true, false, true, false, true, false, true, false, true, false, true, false, false, true, false, false, true, false, true,

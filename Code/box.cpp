@@ -27,6 +27,7 @@ stack<int>& Box::getStack(){
 }
 
 void Box::addPokemon(int id, int targetClicks){
+    cout << "adding egg with ID: " << id << endl;
     _targetClicks = targetClicks;
     _newBerryClicks = targetClicks-5;
     _free = false;
@@ -42,22 +43,26 @@ void Box::update(int clicks){
             _pokemonClicks += clicks;
             int perc = (_pokemonClicks*100)/_targetClicks;
             _healthBar.update(perc);
+
             if(_pokemon.isEgg()){
                 int spriteNum = (perc/25);
                 if(spriteNum == 4){
                     _pokemon.evolve();
-                    setPokemon();
+                    _setPokemon();
                 }
                 else _sprite.setTextureRect(sf::IntRect(0,spriteNum*(_eggTexture.getSize().y/4),_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
             }
+
             else{
                 if(perc >= 100){
                     _finished.push(_pokemon.getID());
-                    if(_pokemon.evolves()) _pokemon.evolve();
-                    else freeSlot();
+                    if(_pokemon.evolves()) _evolve();
+                    else _freeSlot();
                 }
             }
         }
+
+
         if(_berryClicks < _newBerryClicks){
             _berryClicks += clicks;
             _berryBar.update((_berryClicks*100)/_newBerryClicks);
@@ -70,7 +75,7 @@ void Box::buyBerry(){
     _newBerryClicks += _newBerryClicks*(0.2*_berries.size());
 }
 
-void Box::freeSlot(){
+void Box::_freeSlot(){
     _healthBar.update(0);
     _berryBar.update(0);
     _id = -1;
@@ -86,17 +91,28 @@ void Box::freeSlot(){
     _sprite.setTextureRect(sf::IntRect(0,4*(_eggTexture.getSize().y/4),_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
 }
 
-void Box::setPokemon(){
+void Box::_setPokemon(){
     _pokemonClicks = 0;
     _targetClicks = 4;
     _id = _pokemon.getID();
+    cout << "evolving pokemon with ID: " << _id << endl;
     int xP = 28, yP = 6;
     int x = _id%xP;
     int y = (_id - x + xP)/xP;
     int height = _pokemonTexture.getSize().y/yP, width = _pokemonTexture.getSize().x/xP;
     --x; --y;
+    if(x<0){
+        x = x+14;
+        --y;
+    }
     _sprite.setTexture(_pokemonTexture);
     _sprite.setTextureRect(sf::IntRect(x*width,y*height,width,height));
+}
+
+void Box::_evolve(){
+    _pokemon.evolve();
+    _setPokemon();
+
 }
 
 void Box::draw(sf::RenderTarget &window){

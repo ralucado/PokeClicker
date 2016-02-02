@@ -35,8 +35,9 @@ private:
     sf::Texture& _eggTexture;
     sf::Texture& _pokemonTexture;
 
-    void freeSlot();
-    void setPokemon();
+    void _freeSlot();
+    void _setPokemon();
+    void _evolve();
 };
 
 #endif // BOX_H

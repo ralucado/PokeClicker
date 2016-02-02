@@ -22,6 +22,6 @@ void Pokemon::evolve(){
 }
 
 bool Pokemon::evolves(){
-    return EVOLVES[_id];
+    return EVOLVES[_id-1];
 }
 
