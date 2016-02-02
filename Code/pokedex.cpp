@@ -15,7 +15,7 @@ void Pokedex::addPokemon(int num){
     int width = _texture.getSize().x/_xPokemons;
     --x, --y;
     if(x<0){
-        x = x+14;
+        x = x+_xPokemons;
         --y;
     }
     newPokemon.setTextureRect(sf::IntRect(x*width,y*height,width,height));

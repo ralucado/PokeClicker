@@ -102,7 +102,7 @@ void Box::_setPokemon(){
     int height = _pokemonTexture.getSize().y/yP, width = _pokemonTexture.getSize().x/xP;
     --x; --y;
     if(x<0){
-        x = x+14;
+        x = x+xP;
         --y;
     }
     _sprite.setTexture(_pokemonTexture);
