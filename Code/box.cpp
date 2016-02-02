@@ -82,15 +82,17 @@ void Box::freeSlot(){
 
     vector<Berry> aux;
     _berries = aux;
+     _sprite.setTexture(_eggTexture);
+    _sprite.setTextureRect(sf::IntRect(0,4*(_eggTexture.getSize().y/4),_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
 }
 
 void Box::setPokemon(){
     _pokemonClicks = 0;
-    _targetClicks = 150;
-    int num = _pokemon.getID();
+    _targetClicks = 4;
+    _id = _pokemon.getID();
     int xP = 28, yP = 6;
-    int x = num%xP;
-    int y = (num - x + xP)/xP;
+    int x = _id%xP;
+    int y = (_id - x + xP)/xP;
     int height = _pokemonTexture.getSize().y/yP, width = _pokemonTexture.getSize().x/xP;
     --x; --y;
     _sprite.setTexture(_pokemonTexture);

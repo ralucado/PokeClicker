@@ -26,7 +26,11 @@ int main(){
     Button back("Resources/Images/backButton.png");
     LevelBar eggBar("Resources/Images/eggBarE.png", "Resources/Images/eggBarF.png", 894, 509);
     sf::Texture pokemonTexture, eggTexture;
+    priority_queue< pair<int,int>, vector< pair<int,int>>, Compare> eggs;
 
+    for(uint i = 0; i < FROM_EGG.size(); ++i){
+         eggs.push(make_pair(FROM_EGG[i],rand()%9999));
+    }
 
 
 //Main environment
@@ -150,7 +154,8 @@ int main(){
                 eggClicks = eggClicks - eggPrice;
                 eggPrice *= 2;
                 eggBar.update((eggClicks*100)/eggPrice);
-                boxes[freeBox]->addPokemon(rand()%15,15);
+                boxes[freeBox]->addPokemon(eggs.top().first,15);
+                eggs.pop();
             }
 
             //switch to pokedex
