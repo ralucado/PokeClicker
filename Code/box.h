@@ -36,6 +36,7 @@ private:
     sf::Texture& _pokemonTexture;
 
     void freeSlot();
+    void setPokemon();
 };
 
 #endif // BOX_H

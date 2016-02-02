@@ -121,25 +121,26 @@ int main(){
             //pokeball button
             newClicks = pokeball.getClicks();
             eggClicks += newClicks;
-            //cout << eggClicks << endl;
+            cout << "clicat pokeball " << newClicks << " time/s" << endl;
 
             //feed buttons
             for(uint i = 0; i < feeders.size(); ++i){
-                if(boxes[i]->canFeed()) feeders[i]->turnOn();
-            }
-            for(uint i = 0; i < feeders.size(); ++i){
-                if(feeders[i]->getClicks() > 0){
-                    feeders[i]->turnOff();
-                    boxes[i]->buyBerry();
+                if(!boxes[i]->isFree()){
+                    if(!feeders[i]->isOn())
+                        if(boxes[i]->canFeed()) feeders[i]->turnOn();
+                    if(feeders[i]->getClicks() > 0){
+                        cout << "clicat feeder " << i << endl;
+                        boxes[i]->buyBerry();
+                        feeders[i]->turnOff();
+                    }
                 }
             }
 
-            //cout << "test1" << endl;
             //slots
             for (uint i =  0; i < boxes.size(); ++i){
                 boxes[i]->update(newClicks);
             }
-            //cout << "test2" << endl;
+
             //buy egg button
             if(!buyEgg.isOn() && canBuy) buyEgg.turnOn();
 
@@ -150,8 +151,6 @@ int main(){
                 eggPrice *= 2;
                 eggBar.update((eggClicks*100)/eggPrice);
                 boxes[freeBox]->addPokemon(rand()%15,15);
-                //cout << "new egg Price" << eggPrice << endl;
-
             }
 
             //switch to pokedex

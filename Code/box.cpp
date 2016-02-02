@@ -17,7 +17,9 @@ bool Box::isFree(){
 }
 
 bool Box::canFeed(){
-    return false;
+    //cout << _berryClicks << " " << _newBerryClicks << endl;
+    if(_free) return false;
+    else return _berryClicks >= _newBerryClicks;
 }
 
 stack<int>& Box::getStack(){
@@ -26,9 +28,10 @@ stack<int>& Box::getStack(){
 
 void Box::addPokemon(int id, int targetClicks){
     _targetClicks = targetClicks;
-    _newBerryClicks = targetClicks;
+    _newBerryClicks = targetClicks-5;
     _free = false;
-    _pokemon = Pokemon(id);
+    _id = id;
+    _pokemon = Pokemon(_id);
     _sprite.setTexture(_eggTexture);
     _sprite.setTextureRect(sf::IntRect(0,0,_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
 }
@@ -39,12 +42,13 @@ void Box::update(int clicks){
             _pokemonClicks += clicks;
             int perc = (_pokemonClicks*100)/_targetClicks;
             _healthBar.update(perc);
-            cout << "updating poke bar with perc " << perc;
             if(_pokemon.isEgg()){
                 int spriteNum = (perc/25);
-                cout << spriteNum << endl;
-                if(spriteNum == 4) _pokemon.evolve();
-                _sprite.setTextureRect(sf::IntRect(0,spriteNum*(_eggTexture.getSize().y/4),_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
+                if(spriteNum == 4){
+                    _pokemon.evolve();
+                    setPokemon();
+                }
+                else _sprite.setTextureRect(sf::IntRect(0,spriteNum*(_eggTexture.getSize().y/4),_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
             }
             else{
                 if(perc >= 100){
@@ -57,17 +61,40 @@ void Box::update(int clicks){
         if(_berryClicks < _newBerryClicks){
             _berryClicks += clicks;
             _berryBar.update((_berryClicks*100)/_newBerryClicks);
-        //cout << "updating berry bar with perc " << (_berryClicks*100)/_newBerryClicks << endl;
         }
     }
 }
 
 void Box::buyBerry(){
-
+    _berryClicks -= _newBerryClicks;
+    _newBerryClicks += _newBerryClicks*(0.2*_berries.size());
 }
 
 void Box::freeSlot(){
+    _healthBar.update(0);
+    _berryBar.update(0);
+    _id = -1;
+    _free = true;
+    _berryClicks = 0;
+    _targetClicks = 0;
+    _pokemonClicks = 0;
+    _newBerryClicks = 0;
 
+    vector<Berry> aux;
+    _berries = aux;
+}
+
+void Box::setPokemon(){
+    _pokemonClicks = 0;
+    _targetClicks = 150;
+    int num = _pokemon.getID();
+    int xP = 28, yP = 6;
+    int x = num%xP;
+    int y = (num - x + xP)/xP;
+    int height = _pokemonTexture.getSize().y/yP, width = _pokemonTexture.getSize().x/xP;
+    --x; --y;
+    _sprite.setTexture(_pokemonTexture);
+    _sprite.setTextureRect(sf::IntRect(x*width,y*height,width,height));
 }
 
 void Box::draw(sf::RenderTarget &window){
