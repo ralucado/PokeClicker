@@ -13,9 +13,9 @@ SOURCES += main.cpp \
     button.cpp \
     pokedex.cpp \
     levelbar.cpp \
-    berry.cpp \
     pokemon.cpp \
-    box.cpp
+    box.cpp \
+    berrybox.cpp
 
 HEADERS += \
     Background.h \
@@ -23,7 +23,7 @@ HEADERS += \
     button.h \
     pokedex.h \
     levelbar.h \
-    berry.h \
     pokemon.h \
-    box.h
+    box.h \
+    berrybox.h
 

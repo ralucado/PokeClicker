@@ -1,7 +1,7 @@
 #include "pokedex.h"
 
 Pokedex::Pokedex(string path, int xPokemons, int yPokemons){
-    _texture.loadFromFile(path);
+    if(!_texture.loadFromFile(path)) cout << "failed to load pokedex icons texture" << endl;
     _xPokemons = xPokemons;
     _yPokemons = yPokemons;
 }
@@ -21,6 +21,10 @@ void Pokedex::addPokemon(int num){
     newPokemon.setTextureRect(sf::IntRect(x*width,y*height,width,height));
     newPokemon.setPosition(sf::Vector2f(x*width+43,y*height+42));
     _sprites.push_back(newPokemon);
+}
+
+int Pokedex::size(){
+    return _sprites.size();
 }
 
 void Pokedex::draw(sf::RenderTarget& window){

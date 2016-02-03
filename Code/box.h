@@ -2,7 +2,7 @@
 #define BOX_H
 
 #include "utils.h"
-#include "berry.h"
+#include "berrybox.h"
 #include "pokemon.h"
 #include "levelbar.h"
 
@@ -12,7 +12,7 @@ public:
     bool isFree();
     bool canFeed();
     void buyBerry();
-    void update(int clicks);
+    void update(int clicks, int numPokemons);
     void draw(sf::RenderTarget& window);
     void addPokemon(int id, int targetClicks);
     Box(sf::Texture &pokemonTexture, sf::Texture &eggTexture, int posX, int posY);
@@ -20,7 +20,9 @@ public:
     
 private:
     int _id;
+    int _numPokemons;
     bool _free;
+    int _posX, _posY;
     int _berryClicks;
     int _targetClicks;
     int _pokemonClicks;
@@ -31,7 +33,7 @@ private:
     sf::Sprite _sprite;
     LevelBar _berryBar;
     LevelBar _healthBar;
-    vector<Berry> _berries;
+    BerryBox _berryBox;
     sf::Texture& _eggTexture;
     sf::Texture& _pokemonTexture;
 

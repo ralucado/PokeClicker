@@ -51,18 +51,18 @@ SOURCES       = ../Code/main.cpp \
 		../Code/button.cpp \
 		../Code/pokedex.cpp \
 		../Code/levelbar.cpp \
-		../Code/berry.cpp \
 		../Code/pokemon.cpp \
-		../Code/box.cpp 
+		../Code/box.cpp \
+		../Code/berrybox.cpp 
 OBJECTS       = main.o \
 		Background.o \
 		utils.o \
 		button.o \
 		pokedex.o \
 		levelbar.o \
-		berry.o \
 		pokemon.o \
-		box.o
+		box.o \
+		berrybox.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -300,7 +300,7 @@ compiler_clean:
 main.o: ../Code/main.cpp ../Code/utils.h \
 		../Code/button.h \
 		../Code/box.h \
-		../Code/berry.h \
+		../Code/berrybox.h \
 		../Code/pokemon.h \
 		../Code/levelbar.h \
 		../Code/pokedex.h \
@@ -327,20 +327,20 @@ levelbar.o: ../Code/levelbar.cpp ../Code/levelbar.h \
 		../Code/utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o levelbar.o ../Code/levelbar.cpp
 
-berry.o: ../Code/berry.cpp ../Code/berry.h \
-		../Code/utils.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o berry.o ../Code/berry.cpp
-
 pokemon.o: ../Code/pokemon.cpp ../Code/pokemon.h \
 		../Code/utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pokemon.o ../Code/pokemon.cpp
 
 box.o: ../Code/box.cpp ../Code/box.h \
 		../Code/utils.h \
-		../Code/berry.h \
+		../Code/berrybox.h \
 		../Code/pokemon.h \
 		../Code/levelbar.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o box.o ../Code/box.cpp
+
+berrybox.o: ../Code/berrybox.cpp ../Code/berrybox.h \
+		../Code/utils.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o berrybox.o ../Code/berrybox.cpp
 
 ####### Install
 

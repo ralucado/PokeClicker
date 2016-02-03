@@ -1,6 +1,7 @@
 #include "box.h"
 
 Box::Box(sf::Texture& pokemonTexture, sf::Texture& eggTexture, int posX, int posY) : _eggTexture(eggTexture), _pokemonTexture(pokemonTexture){
+    _posX = posX; _posY = posY;
     _free = true;
     _id = -1;
     _sprite.setPosition(posX,posY);
@@ -10,6 +11,8 @@ Box::Box(sf::Texture& pokemonTexture, sf::Texture& eggTexture, int posX, int pos
     _targetClicks = 0;
     _pokemonClicks = 0;
     _newBerryClicks = 0;
+    _numPokemons = 0;
+
 }
 
 bool Box::isFree(){
@@ -18,7 +21,7 @@ bool Box::isFree(){
 
 bool Box::canFeed(){
     //cout << _berryClicks << " " << _newBerryClicks << endl;
-    if(_free) return false;
+    if(_free || _berryBox.isFull()) return false;
     else return _berryClicks >= _newBerryClicks;
 }
 
@@ -29,15 +32,16 @@ stack<int>& Box::getStack(){
 void Box::addPokemon(int id, int targetClicks){
     cout << "adding egg with ID: " << id << endl;
     _targetClicks = targetClicks;
-    _newBerryClicks = targetClicks-5;
+    _newBerryClicks = 10;
     _free = false;
     _id = id;
     _pokemon = Pokemon(_id);
     _sprite.setTexture(_eggTexture);
     _sprite.setTextureRect(sf::IntRect(0,0,_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
+    _berryBox.setParameters("Resources/Images/berries.png", 4, 4, _posX , _posY + 251);
 }
 
-void Box::update(int clicks){
+void Box::update(int clicks, int numPokemons){
     if(!_free){
         if(_pokemonClicks < _targetClicks){
             _pokemonClicks += clicks;
@@ -72,7 +76,8 @@ void Box::update(int clicks){
 
 void Box::buyBerry(){
     _berryClicks -= _newBerryClicks;
-    _newBerryClicks += _newBerryClicks*(0.2*_berries.size());
+    _newBerryClicks += _newBerryClicks*0.2;
+    _berryBox.addBerry();
 }
 
 void Box::_freeSlot(){
@@ -85,15 +90,21 @@ void Box::_freeSlot(){
     _pokemonClicks = 0;
     _newBerryClicks = 0;
 
-    vector<Berry> aux;
-    _berries = aux;
-     _sprite.setTexture(_eggTexture);
+    BerryBox aux;
+    _berryBox = aux;
+    _sprite.setTexture(_eggTexture);
     _sprite.setTextureRect(sf::IntRect(0,4*(_eggTexture.getSize().y/4),_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
+}
+
+void Box::_evolve(){
+    _pokemon.evolve();
+    _setPokemon();
+
 }
 
 void Box::_setPokemon(){
     _pokemonClicks = 0;
-    _targetClicks = 4;
+    _targetClicks = 50 + (50*0.2)*_numPokemons;
     _id = _pokemon.getID();
     cout << "evolving pokemon with ID: " << _id << endl;
     int xP = 28, yP = 6;
@@ -109,17 +120,10 @@ void Box::_setPokemon(){
     _sprite.setTextureRect(sf::IntRect(x*width,y*height,width,height));
 }
 
-void Box::_evolve(){
-    _pokemon.evolve();
-    _setPokemon();
-
-}
 
 void Box::draw(sf::RenderTarget &window){
-    window.draw(_sprite);
+     window.draw(_sprite);
     _healthBar.draw(window);
     _berryBar.draw(window);
-    for (uint i = 0; i < _berries.size(); ++i){
-        window.draw(_berries[i]);
-    }
+    _berryBox.draw(window);
 }

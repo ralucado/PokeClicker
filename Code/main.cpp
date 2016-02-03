@@ -38,7 +38,7 @@ int main(){
     bool menu = true;
     bool canBuy = false;
     int eggClicks = 0;
-    int eggPrice = 4;
+    int eggPrice = 10;
     int freeBox;
 
     //makin buttons, making bacon buttons, taking buttons and then put them in a button, BACON BUTTOOOONS....
@@ -143,7 +143,7 @@ int main(){
 
             //slots
             for (uint i =  0; i < boxes.size(); ++i){
-                boxes[i]->update(newClicks);
+                boxes[i]->update(newClicks, pokedex.size());
             }
 
             //buy egg button
@@ -176,23 +176,25 @@ int main(){
         //draw all the stuff
             window.clear();
             background.draw(window);
+            for (uint i = 0; i < boxes.size(); ++i) boxes[i]->draw(window);
             for (uint i = 0; i < buttons.size(); ++i) window.draw(*buttons[i]);
             for (uint i = 0; i < feeders.size(); ++i) window.draw(*feeders[i]);
-            for (uint i = 0; i < boxes.size(); ++i) boxes[i]->draw(window);
             eggBar.draw(window);
-        }
-
-
-    //handle pokedex scene
-        else{
 
             for(uint i = 0; i < boxes.size(); ++i){
                 while(!boxes[i]->getStack().empty()){
                     pokedex.addPokemon(boxes[i]->getStack().top());
                     cout << "adding to pokedex ID: " << boxes[i]->getStack().top() << endl;
                     boxes[i]->getStack().pop();
+                    eggPrice += eggPrice*0.1;
                 }
             }
+
+        }
+
+
+    //handle pokedex scene
+        else{
 
             //update inputs
             back.update(sf::Mouse::getPosition(window));

@@ -11,6 +11,7 @@ public:
     Pokedex(string path, int xPokemons, int yPokemons);
     void addPokemon(int num);
     void draw(sf::RenderTarget& window);
+    int size();
 
 private:
 
