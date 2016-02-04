@@ -12,21 +12,25 @@ public:
     bool isFree();
     bool canFeed();
     void buyBerry();
-    void update(int clicks, int numPokemons);
+    void update(int clicks, int numPokemons, float deltaTime);
     void draw(sf::RenderTarget& window);
     void addPokemon(int id, int targetClicks);
     Box(sf::Texture &pokemonTexture, sf::Texture &eggTexture, int posX, int posY);
     stack<int>& getStack();
     
 private:
-    int _id;
-    int _numPokemons;
     bool _free;
+
+    int _id;
+    int _newClicks;
+    int _numPokemons;
     int _posX, _posY;
     int _berryClicks;
     int _targetClicks;
     int _pokemonClicks;
     int _newBerryClicks;
+
+    float _elapsedTime;
 
     Pokemon _pokemon;
     stack<int> _finished;
@@ -36,10 +40,14 @@ private:
     BerryBox _berryBox;
     sf::Texture& _eggTexture;
     sf::Texture& _pokemonTexture;
+    sf::Font _font;
+    list<sf::Text> _texts;
 
     void _freeSlot();
     void _setPokemon();
     void _evolve();
+    void _addText();
+    void _updateTexts();
 };
 
 #endif // BOX_H

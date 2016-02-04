@@ -29,6 +29,10 @@ void BerryBox::addBerry(){
     _sprites.push_back(newBerry);
 }
 
+int BerryBox::mulClicks(int clicks){
+    return clicks*size()*1.2+1;
+}
+
 void BerryBox::draw(sf::RenderTarget& window){
     for(uint i = 0; i < _sprites.size(); ++i){
         window.draw(_sprites[i]);

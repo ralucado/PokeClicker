@@ -4,15 +4,16 @@ Box::Box(sf::Texture& pokemonTexture, sf::Texture& eggTexture, int posX, int pos
     _posX = posX; _posY = posY;
     _free = true;
     _id = -1;
-    _sprite.setPosition(posX,posY);
-    _healthBar.setParameters("Resources/Images/lvlbarE.png","Resources/Images/lvlbarF.png", posX + 251, posY);
-    _berryBar.setParameters("Resources/Images/berrybarE.png","Resources/Images/berrybarF.png", posX + 251, posY + 251);
     _berryClicks = 0;
     _targetClicks = 0;
     _pokemonClicks = 0;
     _newBerryClicks = 0;
     _numPokemons = 0;
-
+    _elapsedTime = 0;
+    _sprite.setPosition(posX,posY);
+    _healthBar.setParameters("Resources/Images/lvlbarE.png","Resources/Images/lvlbarF.png", posX + 251, posY);
+    _berryBar.setParameters("Resources/Images/berrybarE.png","Resources/Images/berrybarF.png", posX + 251, posY + 251);
+    if(!_font.loadFromFile("Resources/Fonts/font.TTF")) cout << "could not load font" << endl;
 }
 
 bool Box::isFree(){
@@ -41,10 +42,16 @@ void Box::addPokemon(int id, int targetClicks){
     _berryBox.setParameters("Resources/Images/berries.png", 4, 4, _posX , _posY + 251);
 }
 
-void Box::update(int clicks, int numPokemons){
+void Box::update(int clicks, int numPokemons, float deltaTime){
+
     if(!_free){
-        if(_pokemonClicks < _targetClicks){
-            _pokemonClicks += clicks;
+        _elapsedTime += deltaTime;
+        _updateTexts();
+
+        if(_pokemonClicks < _targetClicks && clicks != 0){
+            _newClicks = _berryBox.mulClicks(clicks);
+            _pokemonClicks += _newClicks;
+            _addText();
             int perc = (_pokemonClicks*100)/_targetClicks;
             _healthBar.update(perc);
 
@@ -89,11 +96,14 @@ void Box::_freeSlot(){
     _targetClicks = 0;
     _pokemonClicks = 0;
     _newBerryClicks = 0;
-
+    _elapsedTime = 0;
     BerryBox aux;
     _berryBox = aux;
     _sprite.setTexture(_eggTexture);
     _sprite.setTextureRect(sf::IntRect(0,4*(_eggTexture.getSize().y/4),_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
+
+    list<sf::Text> aux2;
+    _texts = aux2;
 }
 
 void Box::_evolve(){
@@ -120,10 +130,40 @@ void Box::_setPokemon(){
     _sprite.setTextureRect(sf::IntRect(x*width,y*height,width,height));
 }
 
+void Box::_addText(){
+    sf::Text newText;
+    newText.setFont(_font);
+    newText.setString("+"+to_string(_newClicks));
+    newText.setPosition(_posX+(_sprite.getGlobalBounds().width/2+(rand()%20)-rand()%35), _posY+42);
+    _texts.push_back(newText);
+}
+
+void Box::_updateTexts(){
+    //cout << _elapsedTime << endl;
+    if(_elapsedTime >= FRAME_TIME){
+        _elapsedTime = 0;
+        for (std::list<sf::Text>::iterator it=_texts.begin(); it !=_texts.end();){
+            if((*it).getPosition().y < 0){
+                cout << "updating texts" << endl;
+                it = _texts.erase(it);
+            }
+            else{
+                sf::Color aux = it->getColor();
+                aux.a -= 10;
+                it->setColor(aux);
+                it->setPosition(it->getPosition().x, it->getPosition().y-10);
+                ++it;
+            }
+        }
+    }
+}
 
 void Box::draw(sf::RenderTarget &window){
      window.draw(_sprite);
     _healthBar.draw(window);
     _berryBar.draw(window);
     _berryBox.draw(window);
+    for (std::list<sf::Text>::iterator it=_texts.begin(); it !=_texts.end(); ++it){
+        window.draw(*it);
+    }
 }

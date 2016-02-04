@@ -13,6 +13,7 @@ int main(){
    //load all variables and objects
     srand (time(NULL));
     sf::Event event;
+    sf::Clock _deltaClock;
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Poke Clicker YOYOOYOOOO OOOOOH so gut at dis geim");
     Background background("Resources/Images/background.png");
     Background pokedexBkg("Resources/Images/pokedexbackground.png");
@@ -142,9 +143,12 @@ int main(){
             }
 
             //slots
+            float deltaTime = _deltaClock.getElapsedTime().asSeconds();
+            //cout << "main dTime" << deltaTime << endl;
             for (uint i =  0; i < boxes.size(); ++i){
-                boxes[i]->update(newClicks, pokedex.size());
+                boxes[i]->update(newClicks, pokedex.size(), deltaTime);
             }
+            _deltaClock.restart();
 
             //buy egg button
             if(!buyEgg.isOn() && canBuy) buyEgg.turnOn();

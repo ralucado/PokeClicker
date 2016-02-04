@@ -10,6 +10,7 @@ public:
     BerryBox();
     void setParameters(string path, int xBerries, int yBerries, int xPos, int yPos);
     void draw(sf::RenderTarget& window);
+    int mulClicks(int clicks);
     int size();
     bool isFull();
     void addBerry();
