@@ -15,8 +15,8 @@ So, what do you say. Can you hatch them all?
 
 >Execute:
 
->>$make thegame
+>>$make
 
->>$./thegame
+>>$./Code
 
 >Have Fun!
