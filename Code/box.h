@@ -10,9 +10,9 @@ class Box{
 
 public:
     bool isFree();
-    bool canFeed();
-    void buyBerry();
-    void update(int clicks, int numPokemons, float deltaTime);
+    bool canFeed(int berryClicks);
+    int buyBerry();
+    void update(int clicks, int berryClicks, int numPokemons, float deltaTime);
     void draw(sf::RenderTarget& window);
     void addPokemon(int id, int targetClicks);
     Box(sf::Texture &pokemonTexture, sf::Texture &eggTexture, int posX, int posY);
@@ -25,7 +25,6 @@ private:
     int _newClicks;
     int _numPokemons;
     int _posX, _posY;
-    int _berryClicks;
     int _targetClicks;
     int _pokemonClicks;
     int _newBerryClicks;

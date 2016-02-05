@@ -39,6 +39,7 @@ int main(){
     bool menu = true;
     bool canBuy = false;
     int eggClicks = 0;
+    int berryClicks = 0;
     int eggPrice = 10;
     int freeBox;
 
@@ -125,28 +126,42 @@ int main(){
 
             //pokeball button
             newClicks = pokeball.getClicks();
-            eggClicks += newClicks;
+            if(eggClicks < eggPrice) eggClicks += newClicks;
             //cout << "clicat pokeball " << newClicks << " time/s" << endl;
-
+            bool addClicks = false;
             //feed buttons
             for(uint i = 0; i < feeders.size(); ++i){
                 if(!boxes[i]->isFree()){
-                    if(!feeders[i]->isOn())
-                        if(boxes[i]->canFeed()) feeders[i]->turnOn();
+                    addClicks = true;
+                    if(!feeders[i]->isOn()){
+                        cout << "box " << i << " feeder is off, can i turn it on?" << endl;
+                        if(boxes[i]->canFeed(berryClicks)) feeders[i]->turnOn();
+                    }
+                    else if(!boxes[i]->canFeed(berryClicks)){
+                        cout << "box " << i << " feeder is ON. can i turn it off?" << endl;
+                        feeders[i]->turnOff();
+                    }
+
                     if(feeders[i]->getClicks() > 0){
                         //cout << "clicat feeder " << i << endl;
-                        boxes[i]->buyBerry();
+                        int price = boxes[i]->buyBerry();
+                        cout << "bought berry for box " << i << " costs " << price << endl;
+                        berryClicks -= price;
                         feeders[i]->turnOff();
                     }
                 }
                 else if(feeders[i]->isOn()) feeders[i]->turnOff();
             }
 
+            if(addClicks && newClicks != 0){
+                berryClicks += newClicks;
+                cout << "berryClicks " << berryClicks << endl;
+            }
             //slots
             float deltaTime = _deltaClock.getElapsedTime().asSeconds();
             //cout << "main dTime" << deltaTime << endl;
             for (uint i =  0; i < boxes.size(); ++i){
-                boxes[i]->update(newClicks, pokedex.size(), deltaTime);
+                boxes[i]->update(newClicks, berryClicks, pokedex.size(), deltaTime);
             }
             _deltaClock.restart();
 

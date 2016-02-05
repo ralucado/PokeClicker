@@ -25,6 +25,7 @@ void LevelBar::update(int percentage){
         _spriteFull.setTextureRect(sf::IntRect(0,_textureFull.getSize().y-height,_textureFull.getSize().x,height));
 
     }
+    else if(_percentage != percentage) update(100);
 }
 
 

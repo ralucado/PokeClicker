@@ -4,7 +4,6 @@ Box::Box(sf::Texture& pokemonTexture, sf::Texture& eggTexture, int posX, int pos
     _posX = posX; _posY = posY;
     _free = true;
     _id = -1;
-    _berryClicks = 0;
     _targetClicks = 0;
     _pokemonClicks = 0;
     _newBerryClicks = 0;
@@ -20,10 +19,10 @@ bool Box::isFree(){
     return _free;
 }
 
-bool Box::canFeed(){
-    //cout << _berryClicks << " " << _newBerryClicks << endl;
+bool Box::canFeed(int berryClicks){
+    cout << berryClicks << " " << _newBerryClicks << endl;
     if(_free || _berryBox.isFull()) return false;
-    else return _berryClicks >= _newBerryClicks;
+    else return berryClicks >= _newBerryClicks;
 }
 
 stack<int>& Box::getStack(){
@@ -42,11 +41,11 @@ void Box::addPokemon(int id, int targetClicks){
     _berryBox.setParameters("Resources/Images/berries.png", 4, 4, _posX , _posY + 251);
 }
 
-void Box::update(int clicks, int numPokemons, float deltaTime){
-
+void Box::update(int clicks, int berryClicks, int numPokemons, float deltaTime){
     if(!_free){
         _elapsedTime += deltaTime;
         _updateTexts();
+        _numPokemons = numPokemons;
 
         if(_pokemonClicks < _targetClicks && clicks != 0){
             _newClicks = _berryBox.mulClicks(clicks);
@@ -74,17 +73,17 @@ void Box::update(int clicks, int numPokemons, float deltaTime){
         }
 
 
-        if(_berryClicks < _newBerryClicks){
-            _berryClicks += clicks;
-            _berryBar.update((_berryClicks*100)/_newBerryClicks);
+        if(berryClicks <= _newBerryClicks){
+            _berryBar.update((berryClicks*100)/_newBerryClicks);
         }
     }
 }
 
-void Box::buyBerry(){
-    _berryClicks -= _newBerryClicks;
+int Box::buyBerry(){
+    int price = _newBerryClicks;
     _newBerryClicks += _newBerryClicks*0.2;
     _berryBox.addBerry();
+    return price;
 }
 
 void Box::_freeSlot(){
@@ -92,7 +91,6 @@ void Box::_freeSlot(){
     _berryBar.update(0);
     _id = -1;
     _free = true;
-    _berryClicks = 0;
     _targetClicks = 0;
     _pokemonClicks = 0;
     _newBerryClicks = 0;
@@ -134,7 +132,7 @@ void Box::_addText(){
     sf::Text newText;
     newText.setFont(_font);
     newText.setString("+"+to_string(_newClicks));
-    newText.setPosition(_posX+(_sprite.getGlobalBounds().width/2+(rand()%20)-rand()%35), _posY+42);
+    newText.setPosition(_posX+(_sprite.getGlobalBounds().width/2+(rand()%20)-rand()%35), _posY+42-rand()%6);
     _texts.push_back(newText);
 }
 
@@ -144,7 +142,7 @@ void Box::_updateTexts(){
         _elapsedTime = 0;
         for (std::list<sf::Text>::iterator it=_texts.begin(); it !=_texts.end();){
             if((*it).getPosition().y < 0){
-                cout << "updating texts" << endl;
+                //cout << "updating texts" << endl;
                 it = _texts.erase(it);
             }
             else{
