@@ -27,5 +27,6 @@
 *.out
 *.app
 
-#QT folder
-build-Code-Desktop-Debug 	
+/build-Code-Desktop-Debug
+
+Code.*

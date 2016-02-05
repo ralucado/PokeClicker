@@ -179,6 +179,7 @@ int main(){
                 eggClicks = eggClicks - eggPrice;
                 //eggPrice *= 2;
                 eggBar.update((eggClicks*100)/eggPrice);
+
                 boxes[freeBox]->addPokemon(eggs.top().first,15);
                 eggs.pop();
             }

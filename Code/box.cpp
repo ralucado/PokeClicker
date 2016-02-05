@@ -56,7 +56,7 @@ void Box::update(int clicks, int berryClicks, int numPokemons, float deltaTime){
 
             if(_pokemon.isEgg()){
                 int spriteNum = (perc/25);
-                if(spriteNum == 4){
+                if(spriteNum >= 4){
                     _pokemon.evolve();
                     _setPokemon();
                 }
@@ -72,11 +72,14 @@ void Box::update(int clicks, int berryClicks, int numPokemons, float deltaTime){
             }
         }
 
-
+        int perc;
         if(berryClicks <= _newBerryClicks){
-            _berryBar.update((berryClicks*100)/_newBerryClicks);
+            perc = (berryClicks*100)/_newBerryClicks;
         }
+        else perc = 100;
+        _berryBar.update(perc);
     }
+    else _berryBar.update(0);
 }
 
 int Box::buyBerry(){
@@ -87,6 +90,7 @@ int Box::buyBerry(){
 }
 
 void Box::_freeSlot(){
+    cout << "freeing slot " << endl;
     _healthBar.update(0);
     _berryBar.update(0);
     _id = -1;
