@@ -81,7 +81,7 @@ void Box::update(int clicks, int berryClicks, int numPokemons, float deltaTime){
 
 int Box::buyBerry(){
     int price = _newBerryClicks;
-    _newBerryClicks += _newBerryClicks*0.2;
+    _newBerryClicks += _newBerryClicks/3*0.4;
     _berryBox.addBerry();
     return price;
 }
@@ -112,7 +112,7 @@ void Box::_evolve(){
 
 void Box::_setPokemon(){
     _pokemonClicks = 0;
-    _targetClicks = 50 + (50*0.2)*_numPokemons;
+    _targetClicks = 150 + 100*0.2*_numPokemons;
     _id = _pokemon.getID();
     //cout << "evolving pokemon with ID: " << _id << endl;
     int xP = 28, yP = 6;

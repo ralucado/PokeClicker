@@ -12,6 +12,11 @@ int main(){
 
    //load all variables and objects
     srand (time(NULL));
+    sf::Music music;
+    if (!music.openFromFile("Resources/Sounds/music.ogg")) cout << "failed to load music" << endl; // error
+    music.setLoop(true);
+    music.setVolume(25);
+    music.play();
     sf::Event event;
     sf::Clock _deltaClock;
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Poke Clicker YOYOOYOOOO OOOOOH so gut at dis geim");
@@ -205,7 +210,7 @@ int main(){
                     pokedex.addPokemon(boxes[i]->getStack().top());
                     cout << "adding to pokedex ID: " << boxes[i]->getStack().top() << endl;
                     boxes[i]->getStack().pop();
-                    eggPrice += eggPrice*0.1;
+                    eggPrice += (eggPrice/3)*0.05;
                 }
             }
 
