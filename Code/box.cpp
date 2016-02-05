@@ -20,7 +20,7 @@ bool Box::isFree(){
 }
 
 bool Box::canFeed(int berryClicks){
-    cout << berryClicks << " " << _newBerryClicks << endl;
+    //cout << berryClicks << " " << _newBerryClicks << endl;
     if(_free || _berryBox.isFull()) return false;
     else return berryClicks >= _newBerryClicks;
 }
@@ -30,7 +30,7 @@ stack<int>& Box::getStack(){
 }
 
 void Box::addPokemon(int id, int targetClicks){
-    cout << "adding egg with ID: " << id << endl;
+    //cout << "adding egg with ID: " << id << endl;
     _targetClicks = targetClicks;
     _newBerryClicks = 10;
     _free = false;
@@ -114,7 +114,7 @@ void Box::_setPokemon(){
     _pokemonClicks = 0;
     _targetClicks = 50 + (50*0.2)*_numPokemons;
     _id = _pokemon.getID();
-    cout << "evolving pokemon with ID: " << _id << endl;
+    //cout << "evolving pokemon with ID: " << _id << endl;
     int xP = 28, yP = 6;
     int x = _id%xP;
     int y = (_id - x + xP)/xP;

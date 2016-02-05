@@ -1,7 +1,7 @@
 #include "button.h"
 
 Button::Button(string path){
-    cout << "init!" << endl;
+    //cout << "init!" << endl;
     _clicks = 0;
     _state = State::off;
     if(!_texture.loadFromFile(path)) cout << "failed to load button texture!!" << endl;

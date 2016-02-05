@@ -134,18 +134,18 @@ int main(){
                 if(!boxes[i]->isFree()){
                     addClicks = true;
                     if(!feeders[i]->isOn()){
-                        cout << "box " << i << " feeder is off, can i turn it on?" << endl;
+                        //cout << "box " << i << " feeder is off, can i turn it on?" << endl;
                         if(boxes[i]->canFeed(berryClicks)) feeders[i]->turnOn();
                     }
                     else if(!boxes[i]->canFeed(berryClicks)){
-                        cout << "box " << i << " feeder is ON. can i turn it off?" << endl;
+                         //cout << "box " << i << " feeder is ON. can i turn it off?" << endl;
                         feeders[i]->turnOff();
                     }
 
                     if(feeders[i]->getClicks() > 0){
                         //cout << "clicat feeder " << i << endl;
                         int price = boxes[i]->buyBerry();
-                        cout << "bought berry for box " << i << " costs " << price << endl;
+                        //cout << "bought berry for box " << i << " costs " << price << endl;
                         berryClicks -= price;
                         feeders[i]->turnOff();
                     }
@@ -155,7 +155,7 @@ int main(){
 
             if(addClicks && newClicks != 0){
                 berryClicks += newClicks;
-                cout << "berryClicks " << berryClicks << endl;
+                //cout << "berryClicks " << berryClicks << endl;
             }
             //slots
             float deltaTime = _deltaClock.getElapsedTime().asSeconds();
