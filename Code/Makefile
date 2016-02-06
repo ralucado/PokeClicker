@@ -53,7 +53,8 @@ SOURCES       = main.cpp \
 		levelbar.cpp \
 		pokemon.cpp \
 		box.cpp \
-		berrybox.cpp 
+		berrybox.cpp \
+		emotion.cpp 
 OBJECTS       = main.o \
 		Background.o \
 		utils.o \
@@ -62,7 +63,8 @@ OBJECTS       = main.o \
 		levelbar.o \
 		pokemon.o \
 		box.o \
-		berrybox.o
+		berrybox.o \
+		emotion.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -296,6 +298,7 @@ main.o: main.cpp utils.h \
 		berrybox.h \
 		pokemon.h \
 		levelbar.h \
+		emotion.h \
 		pokedex.h \
 		Background.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
@@ -328,12 +331,17 @@ box.o: box.cpp box.h \
 		utils.h \
 		berrybox.h \
 		pokemon.h \
-		levelbar.h
+		levelbar.h \
+		emotion.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o box.o box.cpp
 
 berrybox.o: berrybox.cpp berrybox.h \
 		utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o berrybox.o berrybox.cpp
+
+emotion.o: emotion.cpp emotion.h \
+		utils.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o emotion.o emotion.cpp
 
 ####### Install
 

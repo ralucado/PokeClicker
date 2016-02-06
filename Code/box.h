@@ -5,6 +5,7 @@
 #include "berrybox.h"
 #include "pokemon.h"
 #include "levelbar.h"
+#include "emotion.h"
 
 class Box{
 
@@ -41,12 +42,16 @@ private:
     sf::Texture& _pokemonTexture;
     sf::Font _font;
     list<sf::Text> _texts;
+    Emotion _emotion;
+    float _emotionTimer;
+    float _targetTime;
 
     void _freeSlot();
     void _setPokemon();
     void _evolve();
     void _addText();
     void _updateTexts();
+    void _updateEmotion(float deltaTime);
 };
 
 #endif // BOX_H

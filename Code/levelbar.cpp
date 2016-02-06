@@ -28,6 +28,9 @@ void LevelBar::update(int percentage){
     else if(_percentage != percentage) update(100);
 }
 
+int LevelBar::getLevel(){
+    return _percentage;
+}
 
 void LevelBar::draw(sf::RenderTarget& window){
     window.draw(_spriteFull);

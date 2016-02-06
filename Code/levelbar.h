@@ -10,6 +10,7 @@ public:
     void setParameters(string ePath, string fPath,int posX,int posY);
     void update(int percentage);
     void draw(sf::RenderTarget& window);
+    int getLevel();
 
 private:
     int _percentage;

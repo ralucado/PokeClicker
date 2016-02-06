@@ -29,6 +29,10 @@ namespace State {
     enum myState {released, active, pressed, off};
 }
 
+namespace Emotions {
+    enum myEmotion {idle, alert, happy, joyful, sad, bugged, angry, singing, love, sick};
+}
+
 namespace Eevee {
 
     static bool FLAREON = false;
