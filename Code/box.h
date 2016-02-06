@@ -16,7 +16,7 @@ public:
     void update(int clicks, int berryClicks, int numPokemons, float deltaTime);
     void draw(sf::RenderTarget& window);
     void addPokemon(int id, int targetClicks);
-    Box(sf::Texture &pokemonTexture, sf::Texture &eggTexture, int posX, int posY);
+    Box(sf::Texture &pokemonTexture, sf::Texture &shinyTexture, sf::Texture &eggTexture, int posX, int posY);
     stack<int>& getStack();
     
 private:
@@ -40,6 +40,7 @@ private:
     BerryBox _berryBox;
     sf::Texture& _eggTexture;
     sf::Texture& _pokemonTexture;
+    sf::Texture& _shinyTexture;
     sf::Font _font;
     list<sf::Text> _texts;
     Emotion _emotion;

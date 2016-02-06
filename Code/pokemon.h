@@ -12,10 +12,12 @@ public:
     int getID();
     void evolve();
     bool evolves();
+    bool isShiny();
 
 private:
     int _id;
     bool _isEgg;
+    bool _shiny;
 
 };
 

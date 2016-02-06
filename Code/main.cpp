@@ -31,7 +31,7 @@ int main(){
     Button toPokedex("Resources/Images/pokedexbutton.png");
     Button back("Resources/Images/backButton.png");
     LevelBar eggBar("Resources/Images/eggBarE.png", "Resources/Images/eggBarF.png", 894, 509);
-    sf::Texture pokemonTexture, eggTexture;
+    sf::Texture pokemonTexture, shinyTexture, eggTexture;
     priority_queue< pair<int,int>, vector< pair<int,int>>, Compare> eggs;
 
     for(uint i = 0; i < FROM_EGG.size(); ++i){
@@ -62,12 +62,13 @@ int main(){
     toPokedex.turnOn();
 
     if(!pokemonTexture.loadFromFile("Resources/Images/pokemons.png"))cout << "couldnt load pokemon sprite texture!" << endl;
+    if(!shinyTexture.loadFromFile("Resources/Images/shiny.png"))cout << "couldnt load shiny pokemon sprite texture!" << endl;
     if(!eggTexture.loadFromFile("Resources/Images/egg.png")) cout << "couldnt load egg texture!" << endl;
 
     //SLOTS
     int offset = 333;
     for(uint i = 0; i<3; ++i){
-        boxes[i] = new Box(pokemonTexture, eggTexture, 24 + i*offset, 24);
+        boxes[i] = new Box(pokemonTexture, shinyTexture, eggTexture, 24 + i*offset, 24);
     }
 
     //FEEDEEEERS

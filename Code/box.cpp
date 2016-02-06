@@ -1,6 +1,7 @@
 #include "box.h"
 
-Box::Box(sf::Texture& pokemonTexture, sf::Texture& eggTexture, int posX, int posY) : _eggTexture(eggTexture), _pokemonTexture(pokemonTexture){
+Box::Box(sf::Texture& pokemonTexture, sf::Texture& shinyTexture, sf::Texture& eggTexture, int posX, int posY)
+    : _eggTexture(eggTexture), _pokemonTexture(pokemonTexture), _shinyTexture(shinyTexture){
     _posX = posX; _posY = posY;
     _free = true;
     _id = -1;
@@ -114,7 +115,8 @@ void Box::_setPokemon(){
     _emotionTimer = 0;
     _emotion.setPosition(_posX+_sprite.getGlobalBounds().width/2, _posY+30);
 
-    _sprite.setTexture(_pokemonTexture);
+    if (_pokemon.isShiny()) _sprite.setTexture(_shinyTexture);
+    else _sprite.setTexture(_pokemonTexture);
     _sprite.setTextureRect(sf::IntRect(x*width,y*height,width,height));
 }
 

@@ -6,10 +6,16 @@ Pokemon::Pokemon(int id)
 {
     _id = id;
     _isEgg = true;
+    _shiny = (rand()%2 == 0);
+    _shiny = (_shiny && rand()%10 == 0);
 }
 
 bool Pokemon::isEgg(){
     return _isEgg;
+}
+
+bool Pokemon::isShiny(){
+    return _shiny;
 }
 
 int Pokemon::getID(){
