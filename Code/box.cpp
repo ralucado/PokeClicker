@@ -9,7 +9,7 @@ Box::Box(sf::Texture& pokemonTexture, sf::Texture& shinyTexture, sf::Texture& eg
     _pokemonClicks = 0;
     _newBerryClicks = 0;
     _numPokemons = 0;
-    _elapsedTime = 0;
+    _textTimePassed = 0;
     _sprite.setPosition(posX,posY);
     _healthBar.setParameters("Resources/Images/lvlbarE.png","Resources/Images/lvlbarF.png", posX + 251, posY);
     _berryBar.setParameters("Resources/Images/berrybarE.png","Resources/Images/berrybarF.png", posX + 251, posY + 251);
@@ -31,25 +31,15 @@ stack<int>& Box::getStack(){
     return _finished;
 }
 
-void Box::addPokemon(int id, int targetClicks){
-    //cout << "adding egg with ID: " << id << endl;
-    _targetClicks = targetClicks;
-    _newBerryClicks = 10;
-    _free = false;
-    _id = id;
-    _pokemon = Pokemon(_id);
-    _sprite.setTexture(_eggTexture);
-    _sprite.setTextureRect(sf::IntRect(0,0,_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
-    _berryBox.setParameters("Resources/Images/berries.png", 4, 4, _posX , _posY + 251);
-}
-
 void Box::update(int clicks, int berryClicks, int numPokemons, float deltaTime){
     if(!_free){
-        _elapsedTime += deltaTime;
+        _timeElapsed += deltaTime;
+
+        _textTimePassed += deltaTime;
         _updateTexts();
 
         if(!_pokemon.isEgg()){
-            _emotionTimer += deltaTime;
+            _emotionTimePassed += deltaTime;
             _updateEmotion(deltaTime);
         }
 
@@ -89,19 +79,32 @@ void Box::update(int clicks, int berryClicks, int numPokemons, float deltaTime){
     else _berryBar.update(0);
 }
 
+void Box::addPokemon(int id, int targetClicks){
+    //cout << "adding egg with ID: " << id << endl;
+    _id = id;
+    _free = false;
+    _newBerryClicks = 10;
+    _pokemon = Pokemon(_id);
+    _targetClicks = targetClicks;
+    _sprite.setTexture(_eggTexture);
+    _berryBox.setParameters("Resources/Images/berries.png", 4, 4, _posX , _posY + 251);
+    _sprite.setTextureRect(sf::IntRect(0,0,_eggTexture.getSize().x/3, _eggTexture.getSize().y/4));
+}
+
 void Box::_evolve(){
     _pokemon.evolve();
     _setPokemon();
 }
 
 void Box::_setPokemon(){
-
+    _timeElapsed = 0;
     _pokemonClicks = 0;
     _targetClicks = 150 + 100*0.2*_numPokemons;
     _healthBar.update(0);
     _id = _pokemon.getID();
     //cout << "evolving pokemon with ID: " << _id << endl;
     int xP = 28, yP = 6;
+
     int x = _id%xP;
     int y = (_id - x + xP)/xP;
     int height = _pokemonTexture.getSize().y/yP, width = _pokemonTexture.getSize().x/xP;
@@ -111,8 +114,8 @@ void Box::_setPokemon(){
         --y;
     }
 
-    _targetTime = 1+rand()%2;
-    _emotionTimer = 0;
+    _targetEmotionTime = 1+rand()%2;
+    _emotionTimePassed = 0;
     _emotion.setPosition(_posX+_sprite.getGlobalBounds().width/2, _posY+30);
 
     if (_pokemon.isShiny()) _sprite.setTexture(_shinyTexture);
@@ -124,12 +127,8 @@ int Box::buyBerry(){
     int price = _newBerryClicks;
     _newBerryClicks += _newBerryClicks/3*0.4;
     _berryBox.addBerry();
-    if(!_pokemon.isEgg()){
-        _emotion.setEmotion(Emotions::love);
-        _emotionTimer = 0;
-        _targetTime = 5;
-        _emotion.setPosition(_posX+_sprite.getGlobalBounds().width/2, _posY+30);
-    }
+    if(!_pokemon.isEgg()) _setEmotion(Emotions::love);
+
     return price;
 }
 
@@ -144,8 +143,8 @@ void Box::_addText(){
 
 void Box::_updateTexts(){
     //cout << _elapsedTime << endl;
-    if(_elapsedTime >= FRAME_TIME){
-        _elapsedTime = 0;
+    if(_textTimePassed >= FRAME_TIME){
+        _textTimePassed = 0;
         for (std::list<sf::Text>::iterator it=_texts.begin(); it !=_texts.end();){
             if((*it).getPosition().y < 0){
                 //cout << "updating texts" << endl;
@@ -164,21 +163,29 @@ void Box::_updateTexts(){
 
 void Box::_updateEmotion(float deltaTime){
     if(!_emotion.isOn()){
-        //cout << "passed " << _emotionTimer << " to " << _targetTime << endl;
-        if(_emotionTimer >= _targetTime){
+        //cout << "passed " << _emotionTimePassed << " to " << _targetEmotionTime << endl;
+        if(_emotionTimePassed >= _targetEmotionTime){
             //cout << "setting an emotion" << endl;
             //cout << "berryBar is " << _berryBar.getLevel() << endl;
             //cout << "healthBar is " << _healthBar.getLevel() << endl;
-            if (_berryBar.getLevel() >= 100) _emotion.setEmotion(Emotions::alert);
-            else if(_healthBar.getLevel() >= 50 && rand()%2 == 0) _emotion.setEmotion(Emotions::singing);
-            else if(_healthBar.getLevel() >= 50) _emotion.setEmotion(Emotions::joyful);
-            else if (rand()%2 == 0)_emotion.setEmotion(Emotions::happy);
-            else _emotion.setEmotion(Emotions::idle);
-            _emotionTimer = 0;
-            _targetTime = 5+rand()%10;
+            if (_berryBar.getLevel() >= 100) _setEmotion(Emotions::alert);
+            else if (_timeElapsed >= 45 && _berryBox.size() <= 3) _setEmotion(Emotions::sick);
+            else if (_timeElapsed >= 35 && _berryBox.size() <= 3) _setEmotion(Emotions::angry);
+            else if (_timeElapsed >= 25 && _berryBox.size() <= 2) _setEmotion(Emotions::bugged);
+            else if (_timeElapsed >= 15 && _berryBox.size() <= 2) _setEmotion(Emotions::sad);
+            else if(_healthBar.getLevel() >= 50 && rand()%2 == 0) _setEmotion(Emotions::singing);
+            else if(_healthBar.getLevel() >= 50) _setEmotion(Emotions::joyful);
+            else if (_berryBox.size() >= 4)_setEmotion(Emotions::happy);
+            else _setEmotion(Emotions::idle);
         }
     }
     else _emotion.update(deltaTime);
+}
+
+void Box::_setEmotion(Emotions::myEmotion emotion){
+    _emotionTimePassed = 0;
+    _targetEmotionTime = 7+rand()%15;
+    _emotion.setEmotion(emotion);
 }
 
 void Box::draw(sf::RenderTarget &window){
@@ -201,7 +208,7 @@ void Box::_freeSlot(){
     _targetClicks = 0;
     _pokemonClicks = 0;
     _newBerryClicks = 0;
-    _elapsedTime = 0;
+    _textTimePassed = 0;
     BerryBox aux;
     _berryBox = aux;
     _sprite.setTexture(_eggTexture);

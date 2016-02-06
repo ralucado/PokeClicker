@@ -30,7 +30,10 @@ private:
     int _pokemonClicks;
     int _newBerryClicks;
 
-    float _elapsedTime;
+    float _timeElapsed;
+    float _textTimePassed;
+    float _emotionTimePassed;
+    float _targetEmotionTime;
 
     Pokemon _pokemon;
     stack<int> _finished;
@@ -44,8 +47,6 @@ private:
     sf::Font _font;
     list<sf::Text> _texts;
     Emotion _emotion;
-    float _emotionTimer;
-    float _targetTime;
 
     void _freeSlot();
     void _setPokemon();
@@ -53,6 +54,7 @@ private:
     void _addText();
     void _updateTexts();
     void _updateEmotion(float deltaTime);
+    void _setEmotion(Emotions::myEmotion emotion);
 };
 
 #endif // BOX_H
