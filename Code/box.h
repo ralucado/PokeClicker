@@ -47,7 +47,9 @@ private:
     sf::Font _font;
     list<sf::Text> _texts;
     Emotion _emotion;
-
+    sf::SoundBuffer _levelUpBuf;
+    sf::SoundBuffer _finishedBuf;
+    sf::Sound _sound;
     void _freeSlot();
     void _setPokemon();
     void _evolve();

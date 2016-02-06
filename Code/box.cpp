@@ -15,6 +15,8 @@ Box::Box(sf::Texture& pokemonTexture, sf::Texture& shinyTexture, sf::Texture& eg
     _berryBar.setParameters("Resources/Images/berrybarE.png","Resources/Images/berrybarF.png", posX + 251, posY + 251);
     _emotion.setParameters("Resources/Images/emotions.png",_posX+_sprite.getGlobalBounds().width/2, _posY+30);
     if(!_font.loadFromFile("Resources/Fonts/font.TTF")) cout << "could not load font" << endl;
+    if(!_levelUpBuf.loadFromFile("Resources/Sounds/lvlUp.ogg")) cout << "failed to load lvl up sound " << endl;
+    if(!_finishedBuf.loadFromFile("Resources/Sounds/finished.ogg")) cout << "failed to load finished sound " << endl;
 }
 
 bool Box::isFree(){
@@ -92,6 +94,9 @@ void Box::addPokemon(int id, int targetClicks){
 }
 
 void Box::_evolve(){
+    _sound.setBuffer(_levelUpBuf);
+    _sound.setVolume(50);
+    _sound.play();
     _pokemon.evolve();
     _setPokemon();
 }
@@ -184,7 +189,7 @@ void Box::_updateEmotion(float deltaTime){
 
 void Box::_setEmotion(Emotions::myEmotion emotion){
     _emotionTimePassed = 0;
-    _targetEmotionTime = 7+rand()%15;
+    _targetEmotionTime = 6+rand()%7;
     _emotion.setEmotion(emotion);
 }
 
@@ -201,6 +206,8 @@ void Box::draw(sf::RenderTarget &window){
 
 void Box::_freeSlot(){
     //cout << "freeing slot " << endl;
+    _sound.setBuffer(_finishedBuf);
+    _sound.play();
     _healthBar.update(0);
     _berryBar.update(0);
     _id = -1;

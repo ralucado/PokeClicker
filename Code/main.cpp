@@ -15,11 +15,11 @@ int main(){
     sf::Music music;
     if (!music.openFromFile("Resources/Sounds/music.ogg")) cout << "failed to load music" << endl; // error
     music.setLoop(true);
-    music.setVolume(25);
+    music.setVolume(75);
     music.play();
     sf::Event event;
     sf::Clock _deltaClock;
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Poke Clicker YOYOOYOOOO OOOOOH so gut at dis geim");
+    sf::RenderWindow window(sf::VideoMode(1000, 696), "Poke Clicker YOYOOYOOOO OOOOOH so gut at dis geim");
     Background background("Resources/Images/background.png");
     Background pokedexBkg("Resources/Images/pokedexbackground.png");
     Pokedex pokedex("Resources/Images/icons.png",14,11);
@@ -111,6 +111,11 @@ int main(){
                 //closed window
                 case (sf::Event::Closed):
                         window.close();
+                    break;
+
+                //Close key
+                case  sf::Event::KeyPressed:
+                        if (event.key.code == sf::Keyboard::Escape) window.close();
                     break;
 
             default:
