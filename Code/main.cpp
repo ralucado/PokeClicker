@@ -8,6 +8,18 @@
 
 using namespace std;
 
+void openGame(){
+
+}
+
+void resetGame(){
+
+}
+
+void saveGame(){
+
+}
+
 int main(){
 
    //load all variables and objects
@@ -22,6 +34,8 @@ int main(){
     sf::RenderWindow window(sf::VideoMode(1000, 696), "Poke Clicker YOYOOYOOOO OOOOOH so gut at dis geim");
     Background background("Resources/Images/background.png");
     Background pokedexBkg("Resources/Images/pokedexbackground.png");
+    Background menuBkg("Resources/Images/firstBackground.png");
+    Background creditBkg("Resources/Images/credits.png");
     Pokedex pokedex("Resources/Images/icons.png",14,11);
     vector<Box*> boxes(3);
     vector<Button*> buttons;
@@ -30,7 +44,11 @@ int main(){
     Button buyEgg("Resources/Images/buyEgg.png");
     Button toPokedex("Resources/Images/pokedexbutton.png");
     Button back("Resources/Images/backButton.png");
+    Button toMenu("Resources/Images/backButtoncredits.png");
     LevelBar eggBar("Resources/Images/eggBarE.png", "Resources/Images/eggBarF.png", 894, 509);
+    Button newGame("Resources/Images/newGame.png");
+    Button loadGame("Resources/Images/loadGame.png");
+    Button credits("Resources/Images/creditButton.png");
     sf::Texture pokemonTexture, shinyTexture, eggTexture;
     priority_queue< pair<int,int>, vector< pair<int,int>>, Compare> eggs;
 
@@ -42,6 +60,9 @@ int main(){
 //Main environment
     int newClicks;
     bool menu = true;
+    bool game = false;
+    bool pokedexScene = false;
+    bool creditScene = false;
     bool canBuy = false;
     int eggClicks = 0;
     int berryClicks = 0;
@@ -84,6 +105,19 @@ int main(){
     back.setPosition(881,618);
     back.turnOn();
 
+
+//Menu environment
+    newGame.setPosition(140, 550);
+    newGame.turnOn();
+    loadGame.setPosition(401,550);
+    loadGame.turnOn();
+    credits.setPosition(665,550);
+    credits.turnOn();
+
+//Credit environment
+    toMenu.setPosition(401,550);
+    toMenu.turnOn();
+
 //game loop
     while(window.isOpen()){
         //cout << "ekisku te cierras" << endl;
@@ -95,7 +129,12 @@ int main(){
                 //pressed buttons
                 case (sf::Event::MouseButtonPressed) :
                 case (sf::Event::MouseButtonReleased) :
-                    if(menu){
+                    if (menu){
+                        newGame.handleMouseEvent(event);
+                        loadGame.handleMouseEvent(event);
+                        credits.handleMouseEvent(event);
+                    }
+                    else if(game){
                         for (uint i = 0; i < buttons.size(); ++i){
                             buttons[i]->handleMouseEvent(event);
                         }
@@ -104,27 +143,57 @@ int main(){
                         }
                     }
 
-                    else back.handleMouseEvent(event);
+                    else if (pokedexScene) back.handleMouseEvent(event);
+
+                    else if (creditScene) toMenu.handleMouseEvent(event);
 
                     break;
 
                 //closed window
                 case (sf::Event::Closed):
+                        saveGame();
                         window.close();
                     break;
 
-                //Close key
-                case  sf::Event::KeyPressed:
-                        if (event.key.code == sf::Keyboard::Escape) window.close();
-                    break;
 
             default:
                     break;
             }
         }
 
-    //handle menu scene
+     //handle menu scene
         if(menu){
+
+            newGame.update(sf::Mouse::getPosition(window));
+            loadGame.update(sf::Mouse::getPosition(window));
+            credits.update(sf::Mouse::getPosition(window));
+
+            //switch to new scene
+            if(newGame.getClicks() != 0){
+                resetGame();
+                game = true;
+                menu = false;
+            }
+            else if(loadGame.getClicks() != 0){
+                openGame();
+                game = true;
+                menu = false;
+            }
+            else if (credits.getClicks()){
+                creditScene = true;
+                menu = false;
+            }
+
+            window.clear();
+            menuBkg.draw(window);
+            window.draw(newGame);
+            window.draw(loadGame);
+            window.draw(credits);
+
+        }
+
+    //handle game scene
+        else if(game){
 
             //update inputs
             for(uint i = 0; i < buttons.size(); ++i){
@@ -202,7 +271,10 @@ int main(){
             }
 
         //switch to pokedex
-        if(toPokedex.getClicks() != 0) menu = false;
+        if(toPokedex.getClicks() != 0){
+            pokedexScene = true;
+            game = false;
+        }
 
         //draw all the stuff
             window.clear();
@@ -225,13 +297,16 @@ int main(){
 
 
     //handle pokedex scene
-        else{
+        else if (pokedexScene){
 
             //update inputs
             back.update(sf::Mouse::getPosition(window));
 
             //switch to main
-            if(back.getClicks() != 0) menu = true;
+            if(back.getClicks() != 0){
+                pokedexScene = false;
+                game = true;
+            }
 
             //draw all the stuff
             window.clear();
@@ -239,6 +314,22 @@ int main(){
             pokedex.draw(window);
             window.draw(back);
 
+
+        }
+//handle credit scene
+        else if (creditScene){
+             toMenu.update(sf::Mouse::getPosition(window));
+
+             if(toMenu.getClicks() != 0){
+                 creditScene = false;
+                 menu = true;
+             }
+
+             creditBkg.draw(window);
+             window.draw(toMenu);
+        }
+
+        else{
 
         }
 
